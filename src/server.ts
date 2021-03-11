@@ -4,15 +4,16 @@ import mongoose from "mongoose";
 import { servicesVersion } from "typescript";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import apiRoutes from "./services";
+import apiRoutes from "./api";
 import error_handler from "node-error-handler";
-
-//server and port
 const server = express();
-const PORT = process.env.PORT;
+
 //set up the right .evn file
 const environment = process.env.NODE_ENV;
 env(environment);
+
+//server and port
+const PORT = process.env.PORT;
 
 //MIDDLEWARES
 server.use(express.json());
