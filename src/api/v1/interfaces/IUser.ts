@@ -11,6 +11,10 @@ interface IUser extends Document {
   dateBirth: Date;
   refreshToken: String;
   verified: Boolean;
+  comparePassword: comparePasswordFunction;
 }
+
+type comparePasswordFunction = (password: string) => boolean | null;
+type findByEmail = (email: string) => object | null;
 
 export default IUser;

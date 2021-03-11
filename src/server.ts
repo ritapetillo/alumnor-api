@@ -6,6 +6,9 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import apiRoutes from "./api";
 import error_handler from "node-error-handler";
+import createReadisClient from "./Libs/redis";
+import JWTR from "jwt-redis";
+
 const server = express();
 
 //set up the right .evn file
@@ -15,6 +18,14 @@ env(environment);
 //server and port
 const PORT = process.env.PORT;
 
+//connect to redis
+const { REDIS_PORT, REDIS_HOST, REDIS_PASS } = process.env!;
+const redisClient = createReadisClient(
+  Number(REDIS_PORT),
+  REDIS_HOST!,
+  REDIS_PASS!
+);
+export const jwtr = new JWTR(redisClient);
 //MIDDLEWARES
 server.use(express.json());
 //cors
@@ -31,6 +42,16 @@ server.use(cookieParser());
 //ROUTES
 server.use("/api", apiRoutes);
 
+server.post("/", (res, req) => {
+  redisClient.set("foo", "bar");
+});
+
+server.get("/", (req, res) => {
+  redisClient.get("foo", (err, reply) => {
+    res.send(reply);
+  });
+});
+
 //ERROR HANDLER
 server.use(error_handler({ log: true, debug: true }));
 
@@ -41,6 +62,9 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
+    redisClient.on("connect", function () {
+      console.error("connected");
+    });
     server.listen(PORT, () =>
       console.log(`connected to ${PORT} in ${environment} env`)
     );

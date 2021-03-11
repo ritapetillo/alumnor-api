@@ -10,7 +10,7 @@ const registerInstructor = async (
   try {
     const newIstructor = new Instructor(req.body);
     const instructor = await newIstructor.save();
-    res.status(200).send({ instructor });
+    res.status(201).send({ instructor });
   } catch (err) {
     const error: any = new Error("There was a problem with the registration");
     error.code = 404;

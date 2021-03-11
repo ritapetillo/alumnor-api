@@ -1,16 +1,15 @@
 import { NextFunction, Request, Response } from "express";
-import { Error } from "mongoose";
-import Student from "../models/Student";
+import Admin from "../models/Admin";
 
-const registerStudent = async (
+const registerAdmin = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const newStudent = new Student(req.body);
-    const student = await newStudent.save();
-    res.status(201).send({ student });
+    const newAdmin = new Admin(req.body);
+    const admin = await newAdmin.save();
+    res.status(201).send({ admin });
   } catch (err) {
     const error: any = new Error("There was a problem with the registration");
     error.code = 404;
@@ -18,4 +17,4 @@ const registerStudent = async (
   }
 };
 
-export default { registerStudent };
+export default { registerAdmin };
