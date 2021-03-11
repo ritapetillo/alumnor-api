@@ -6,14 +6,13 @@ const options = { discriminatorKey: "role" };
 
 const instructorSchema: Schema = new Schema(
   {
+    rating: {
+      type: Number,
+    },
+    qualifications: [{ type: String }],
     canCreateCourse: {
       type: Boolean,
       default: false,
-    },
-    typeOfPay: {
-      type: String,
-      default: "hourly",
-      enum: ["hourly", "percentage"],
     },
     hourlyPay: Number,
     percentagePay: Number,
