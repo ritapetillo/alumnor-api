@@ -1,9 +1,9 @@
 import mongoose, { Schema } from "mongoose";
-import IUser from "../interfaces/IUser";
+import IUser, { IUserModel } from "../interfaces/IUser";
 import bcrypt from "bcrypt";
 import userRoutes from "../services/users";
-
-const options = { discriminatorKey: "role" };
+import { createNewGoogleUser } from "../helpers/oauth/strategies/google/utils";
+const options = { discriminatorKey: "role", timeStamp: true };
 
 const userSchema = new Schema<IUser>(
   {
@@ -22,7 +22,6 @@ const userSchema = new Schema<IUser>(
     },
     password: {
       type: String,
-      required: true,
     },
     googleId: {
       type: String,
@@ -36,13 +35,13 @@ const userSchema = new Schema<IUser>(
     address: {
       type: Object,
     },
-    image: {
+    picture: {
       type: String,
     },
     dateBirth: {
       type: String,
     },
-    
+
     verified: {
       type: Boolean,
       default: false,
@@ -75,6 +74,34 @@ userSchema.methods.comparePassword = async function (candidatePassword, next) {
     return null;
   }
 };
+
+//method to findOneOrCreate
+userSchema.statics.findOrCreate = async function (strategy = "", profile, id) {
+  try {
+    const user = await this.findOne({
+      email: profile.email,
+      [strategy]: id,
+    });
+    if (user) {
+      return user;
+    }
+    //if there is no user with such email
+    else {
+      if (strategy == "googleId") {
+        const user = await createNewGoogleUser(profile);
+        if (user) {
+          return user;
+        } else return null;
+      }
+      const user = new this(profile);
+      user.role = "student";
+      const userSaved = await user.save();
+      return userSaved;
+    }
+  } catch (err) {
+    return null;
+  }
+};
 // Omit the password when returning a user
 userSchema.set("toJSON", {
   transform: function (doc: any, ret: any) {
@@ -83,4 +110,4 @@ userSchema.set("toJSON", {
   },
 });
 
-export default mongoose.model<IUser>("users", userSchema);
+export default mongoose.model<IUser, IUserModel>("users", userSchema);

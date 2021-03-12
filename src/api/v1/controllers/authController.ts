@@ -15,7 +15,9 @@ import {
   sendEmail,
 } from "../helpers/emails/sendiGrid";
 import { generateEmailVerificationToken } from "../helpers/tokens";
-import { IPayloadJWTR, ITokens } from "../interfaces/Itoekens";
+import { IGoogleUserPayload } from "../interfaces/IStrategies";
+import config from "../../../Config";
+
 //LOGIN CONTROLLER
 const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -176,7 +178,12 @@ const googleAuthCallback = async (
   next: NextFunction
 ) => {
   try {
-   console.log(req.user)
+    if (!req.user) throw Error;
+    const { user, tokens }: any = req.user;
+    const cookies = await generateCookies(tokens, res);
+    res.redirect(`${config.FE_URI}`);
+
+    res.send(req.user);
   } catch (err) {
     console.log(err);
     const error: any = new Error(`User not found`);
@@ -191,5 +198,5 @@ export default {
   refreshToken,
   sendPasswordResetLink,
   resetPasword,
-  googleAuthCallback
+  googleAuthCallback,
 };
