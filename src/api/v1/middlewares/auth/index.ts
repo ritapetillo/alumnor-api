@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import config from "../../../../Config";
 import { decodeJWT } from "../../helpers/tokens";
 import { RequestUser } from "../../interfaces/IRequest";
 
@@ -12,7 +13,7 @@ export const authenticateUser = async (
     if (!accessToken) throw Error;
     const decoded = await decodeJWT(
       accessToken,
-      process.env.ACCESS_TOKEN_SECRET!
+      config.ACCESS_TOKEN_SECRET!
     );
     if (!decoded) throw Error;
     const { _id, email } = decoded;

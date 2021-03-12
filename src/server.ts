@@ -8,6 +8,9 @@ import apiRoutes from "./api";
 import error_handler from "node-error-handler";
 import createReadisClient from "./Libs/redis";
 import JWTR from "jwt-redis";
+import passport from "passport";
+import "./api/v1/helpers/oauth/strategies/google";
+import config from "./Config";
 
 const server = express();
 
@@ -16,7 +19,7 @@ const environment = process.env.NODE_ENV;
 env(environment);
 
 //server and port
-const PORT = process.env.PORT;
+const PORT = config.PORT;
 
 //connect to redis
 const { REDIS_PORT, REDIS_HOST, REDIS_PASS } = process.env!;
@@ -25,11 +28,15 @@ const redisClient = createReadisClient(
   REDIS_HOST!,
   REDIS_PASS!
 );
+
+//initialize jwtr
 export const jwtr = new JWTR(redisClient);
+
+////////////////////////////////
 //MIDDLEWARES
 server.use(express.json());
 //cors
-const whiteList = [process.env.FRONT_URI!];
+const whiteList = [config.FE_URI!];
 server.use(
   cors({
     origin: whiteList,
@@ -38,7 +45,10 @@ server.use(
 );
 //cookie parser
 server.use(cookieParser());
+//passport
+server.use(passport.initialize());
 
+//////////////////////////
 //ROUTES
 server.use("/api", apiRoutes);
 
@@ -57,7 +67,7 @@ server.use(error_handler({ log: true, debug: true }));
 
 //connect to server and db
 mongoose
-  .connect(process.env.MONGO_URI!, {
+  .connect(config.MONGO_URI!, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

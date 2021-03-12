@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import JWTRedis from "jwt-redis";
+import config from "../../../../Config";
 import { jwtr } from "../../../../server";
 import { IPayloadJWTR, ITokens, IUserPayload } from "../../interfaces/Itoekens";
 // import config from "../../../../Config";
@@ -31,8 +32,8 @@ export const generateTokens = async (payload: IUserPayload) => {
     //generate regolar token (not stored in cache)
     const accessToken = await encodeJWT(
       payload,
-      process.env.ACCESS_TOKEN_SECRET!,
-      process.env.ACCESS_TOKEN_EXPIRATION!
+      config.ACCESS_TOKEN_SECRET!,
+      config.ACCESS_TOKEN_EXPIRATION!
     );
     const refreshPayload = { ...payload, jti: payload._id + "refresh" };
     //first delete any refresh token already stored, if any
@@ -40,9 +41,9 @@ export const generateTokens = async (payload: IUserPayload) => {
     //and then generate a new refresh token
     const refreshToken = await jwtr.sign(
       refreshPayload,
-      process.env.REFRESH_TOKEN_SECRET!,
+      config.REFRESH_TOKEN_SECRET!,
       {
-        expiresIn: process.env.REFRESH_TOKEN_EXPIRATION!,
+        expiresIn: config.REFRESH_TOKEN_EXPIRATION!,
       }
     );
     if (!accessToken && !refreshToken) return null;
@@ -56,7 +57,7 @@ export const verifyRefreshToken = async (token: string) => {
   try {
     const decoded: IPayloadJWTR = await jwtr.verify(
       token,
-      process.env.REFRESH_TOKEN_SECRET!
+      config.REFRESH_TOKEN_SECRET!
     );
     if (decoded) {
       const { _id, email } = decoded;
@@ -79,7 +80,7 @@ export const generateEmailVerificationToken = async (
     //and then generate a new refresh token
     const emailVerificationToken = await jwtr.sign(
       fullVerificationPayload,
-      process.env.EMAIL_VERIFICATION_TOKEN_SECRET!,
+      config.EMAIL_VERIFICATION_TOKEN_SECRET!,
       {
         expiresIn: "7d",
       }
@@ -95,7 +96,7 @@ export const verifyVerificationEmailToken = async (token: string) => {
   try {
     const decoded: IPayloadJWTR = await jwtr.verify(
       token,
-      process.env.EMAIL_VERIFICATION_TOKEN_SECRET!
+      config.EMAIL_VERIFICATION_TOKEN_SECRET!
     );
     if (decoded) {
       const { _id } = decoded;
@@ -120,7 +121,7 @@ export const generatePasswordResetToken = async (
     //and then generate a new refresh token
     const passResetToken = await jwtr.sign(
       extendedPayload,
-      process.env.PASS_RESET_TOKEN_SECRET!,
+      config.PASS_RESET_TOKEN_SECRET!,
       {
         expiresIn: "1d",
       }
@@ -136,7 +137,7 @@ export const verifyPasswordResetToken = async (token: string) => {
   try {
     const decoded: IPayloadJWTR = await jwtr.verify(
       token,
-      process.env.PASS_RESET_TOKEN_SECRET!
+      config.PASS_RESET_TOKEN_SECRET!
     );
     if (decoded) {
       const { _id, email } = decoded;

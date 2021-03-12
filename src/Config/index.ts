@@ -1,6 +1,27 @@
+import { env } from "custom-env";
+
+//set up the right .evn file
+const environment = process.env.NODE_ENV;
+env(environment);
+
 export default {
-  accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
-  refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
-  accessTokenExpiration: process.env.ACCESS_TOKEN_EXPIRATION,
-  refreshTokenExpiration: process.env.REFRESH_TOKEN_EXPIRATION,
+  ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
+  REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET,
+  ACCESS_TOKEN_EXPIRATION: process.env.ACCESS_TOKEN_EXPIRATION,
+  REFRESH_TOKEN_EXPIRATION: process.env.REFRESH_TOKEN_EXPIRATION,
+  ACCESS_COOKIE_EXPIRATION: process.env.ACCESS_COOKIE_EXPIRATION,
+  REFRESH_COOKIE_EXPIRATION: process.env.REFRESH_COOKIE_EXPIRATION,
+  EMAIL_VERIFICATION_TOKEN_SECRET: process.env.EMAIL_VERIFICATION_TOKEN_SECRET,
+  PASS_RESET_TOKEN_SECRET: process.env.PASS_RESET_TOKEN_SECRET,
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+  FE_URI: process.env.FE_URI,
+  BE_URI: process.env.BE_URI,
+  REDIS_HOST: process.env.REDIS_HOST,
+  REDIS_PASS: process.env.REDIS_PASS,
+  REDIS_PORT: process.env.REDIS_PORT,
+  SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
+  EMAIL_SENDER: process.env.EMAIL_SENDER,
+  MONGO_URI: process.env.MONGO_URI,
+  PORT: process.env.PORT,
 };

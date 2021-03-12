@@ -170,6 +170,20 @@ const resetPasword = async (
   }
 };
 
+const googleAuthCallback = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+   console.log(req.user)
+  } catch (err) {
+    console.log(err);
+    const error: any = new Error(`User not found`);
+    error.code = 404;
+    next(error);
+  }
+};
 export default {
   login,
   signup,
@@ -177,4 +191,5 @@ export default {
   refreshToken,
   sendPasswordResetLink,
   resetPasword,
+  googleAuthCallback
 };

@@ -1,12 +1,24 @@
 import express from "express";
 import authController from "../../controllers/authController";
-const authRoutes = express.Router();
+import passport from "passport";
+const authRouter = express.Router();
 
-authRoutes.post("/login", authController.login);
-authRoutes.post("/signup", authController.signup);
-authRoutes.get("/verify/:token", authController.verifyEmail);
-authRoutes.post("/refresh", authController.refreshToken);
-authRoutes.post("/reset", authController.sendPasswordResetLink);
-authRoutes.post("/new-password", authController.resetPasword);
+//EMAIL AND PASSWORKD AUTH
+authRouter.post("/login", authController.login);
+authRouter.post("/signup", authController.signup);
+authRouter.get("/verify/:token", authController.verifyEmail);
+authRouter.post("/refresh", authController.refreshToken);
+authRouter.post("/reset", authController.sendPasswordResetLink);
+authRouter.post("/new-password", authController.resetPasword);
 
-export default authRoutes;
+//GOOGLE AUTH
+authRouter.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+authRouter.get(
+  "/google/callback",
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  authController.googleAuthCallback
+);
+export default authRouter;
