@@ -24,4 +24,4 @@ const instructorSchema: Schema = new Schema(
   options
 );
 
-export default User.discriminator<IInstructor>("instructors", instructorSchema);
+export default User.discriminator<IInstructor>("instructor", instructorSchema);

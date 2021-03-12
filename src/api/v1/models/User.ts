@@ -42,11 +42,10 @@ const userSchema = new Schema<IUser>(
     dateBirth: {
       type: String,
     },
-    refreshToken: {
-      type: String,
-    },
+    
     verified: {
       type: Boolean,
+      default: false,
     },
   },
   options

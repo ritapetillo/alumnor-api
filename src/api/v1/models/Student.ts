@@ -19,4 +19,4 @@ const studentSchema: Schema = new Schema(
   options
 );
 
-export default User.discriminator<IStudent>("students", studentSchema);
+export default User.discriminator<IStudent>("student", studentSchema);

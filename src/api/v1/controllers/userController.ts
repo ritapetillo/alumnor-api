@@ -1,5 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { Error } from "mongoose";
+import IUser from "../interfaces/IUser";
+import Admin from "../models/Admin";
+import Instructor from "../models/Instructor";
+import Student from "../models/Student";
 import User from "../models/User";
 
 const getUsers = async (req: Request, res: Response, next: NextFunction) => {
