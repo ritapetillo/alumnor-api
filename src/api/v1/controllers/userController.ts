@@ -15,10 +15,11 @@ const getUsers = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const getUser = async (req: any, res: Response, next: NextFunction) => {
+const getUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    
     const { email, _id } = req.user;
-    const user = await User.findById(_id);
+    const user = await User.findById(req.user._id);
     if (!user) throw Error;
     res.status(200).send({ user });
   } catch (err) {
