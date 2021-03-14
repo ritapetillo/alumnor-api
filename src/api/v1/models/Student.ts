@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import IStudent from "../interfaces/IStudent";
 import User from "./User";
 
+
 const options = { discriminatorKey: "role" };
 
 const studentSchema: Schema = new Schema(

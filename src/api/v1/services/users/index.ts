@@ -6,9 +6,17 @@ const userRoutes = express.Router();
 
 userRoutes.get("/", userController.getUsers);
 
+//get current user
+//GET api/v1/users/me
 userRoutes.get('/me', authenticateUser, userController.getUser)
 
-userRoutes.put("/edit", authenticateUser, userController.editUser);
+//edit current user
+//PUT api/v1/users/edit
+userRoutes.put("/edit", authenticateUser, userController.editCurrentUser);
+
+//delete current user
+//DELETE api/v1/users/delete
+userRoutes.delete("/delete", authenticateUser, userController.deleteCurrentUser);
 
 
 export default userRoutes;

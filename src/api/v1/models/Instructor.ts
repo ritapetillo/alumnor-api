@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import IInstructor from "../interfaces/IInstructor";
 import User from "./User";
+import { CREATE, DELETE, EDIT, READ } from "../helpers/models/priviledges";
 
 const options = { discriminatorKey: "role" };
 
@@ -10,15 +11,21 @@ const instructorSchema: Schema = new Schema(
       type: Number,
     },
     qualifications: [{ type: String }],
-    canCreateCourse: {
-      type: Boolean,
-      default: false,
-    },
     hourlyPay: Number,
     percentagePay: Number,
     approved: {
       type: Boolean,
       default: false,
+    },
+    priviledges: {
+      course: {
+        type: Array,
+        default: [CREATE, DELETE, READ, EDIT],
+      },
+      student: {
+        type: Array,
+        default: [READ],
+      },
     },
   },
   options
