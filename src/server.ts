@@ -54,16 +54,6 @@ server.use(passport.initialize());
 //ROUTES
 server.use("/api", apiRoutes);
 
-server.post("/", (res, req) => {
-  redisClient.set("foo", "bar");
-});
-
-server.get("/", (req, res) => {
-  redisClient.get("foo", (err, reply) => {
-    res.send(reply);
-  });
-});
-
 //ERROR HANDLER
 server.use(error_handler({ log: true, debug: true }));
 

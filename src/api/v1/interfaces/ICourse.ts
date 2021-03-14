@@ -6,10 +6,11 @@ export interface ICourse extends Document {
   highlights: [String];
   price: String;
   picture: String;
-  instructors: [IInstructor];
+  instructors: [String];
   startDate: Date;
   endDate: Date;
   liveSchedule: [Date];
   sections: [{}];
-  category:[{}]
+  category: [{}];
+  
 }

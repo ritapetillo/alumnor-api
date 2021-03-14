@@ -8,9 +8,6 @@ import courseRoutes from "./services/courses";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.send("v1 app");
-});
 //routes
 router.use("/users", userRoutes);
 router.use("/admin", adminRoutes);

@@ -17,9 +17,8 @@ const getUsers = async (req: Request, res: Response, next: NextFunction) => {
 
 const getUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    
-    const { email, _id } = req.user;
-    const user = await User.findById(req.user._id);
+    const userAuth: any = req.user;
+    const user = await User.findById(userAuth._id);
     if (!user) throw Error;
     res.status(200).send({ user });
   } catch (err) {
@@ -64,7 +63,7 @@ const uploadPicture = async (
     if (!picture) throw Error;
     const user = await User.findByIdAndUpdate(_id, { $set: { picture } });
     if (!user) throw Error;
-    res.status(200).send({ picture});
+    res.status(200).send({ picture });
   } catch (err) {
     const error: any = new Error("It was not possible to upload the picture");
     error.code = 401;
