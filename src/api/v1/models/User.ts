@@ -57,6 +57,8 @@ const userSchema = new Schema<IUser>(
 
 userSchema.pre<IUser>("save", async function (next) {
   try {
+    this.picture = `https://ui-avatars.com/api/?name=${this.firstName}+${this.lastName}&?background=random`;
+
     if (!this.isModified("password")) return next();
     const salt = await bcrypt.genSalt();
     this.password = await bcrypt.hash(this.password, salt);

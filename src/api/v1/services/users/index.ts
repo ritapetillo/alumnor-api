@@ -1,5 +1,6 @@
 import express, { NextFunction } from "express";
 import userController from "../../controllers/userController";
+import parser from "../../helpers/cloudinary/user";
 import { RequestUser } from "../../interfaces/IRequest";
 import {authenticateUser} from '../../middlewares/auth'
 const userRoutes = express.Router();
@@ -17,6 +18,9 @@ userRoutes.put("/edit", authenticateUser, userController.editCurrentUser);
 //delete current user
 //DELETE api/v1/users/delete
 userRoutes.delete("/delete", authenticateUser, userController.deleteCurrentUser);
+
+//POST api/v1/users/picture
+userRoutes.post('/picture', authenticateUser,parser.single('picture'), userController.uploadPicture)
 
 
 export default userRoutes;

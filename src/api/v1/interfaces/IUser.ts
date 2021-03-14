@@ -8,7 +8,7 @@ interface IUser extends Document {
   password: String;
   googleId: String;
   address: {};
-  image: String;
+  picture: String;
   dateBirth: Date;
   refreshToken: String;
   verified: Boolean;

@@ -25,5 +25,8 @@ export default {
   MONGO_URI: process.env.MONGO_URI,
   PORT: process.env.PORT,
   FACEBOOK_APP_ID: process.env.FACEBOOK_APP_ID,
-  FACEBOOK_APP_SECRET: process.env.FACEBOOK_APP_SECRET
+  FACEBOOK_APP_SECRET: process.env.FACEBOOK_APP_SECRET,
+  CLOUD_API_KEY: process.env.CLOUD_API_KEY,
+  CLOUD_API_SECRET: process.env.CLOUD_API_SECRET,
+  CLOUD_NAME: process.env.CLOUD_NAME,
 };
