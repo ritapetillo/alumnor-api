@@ -18,3 +18,40 @@ export interface IGoogleUserPayload extends Express.User {
   
 
 }
+
+export interface IFacebookPayload {
+  id: string;
+  displayName: string;
+  name: Name;
+  emails: Email[];
+  photos: Photo[];
+  provider: string;
+  _raw: string;
+  _json: Json;
+}
+
+export interface Name {
+  familyName: string;
+  givenName: string;
+}
+
+export interface Email {
+  value: string;
+}
+
+export interface Photo {
+  value: string;
+}
+
+export interface Json {
+  id: string;
+  name: string;
+  email: string;
+  picture: Picture;
+  last_name: string;
+  first_name: string;
+}
+
+export interface Picture {
+  data: any[];
+}

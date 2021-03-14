@@ -10,6 +10,8 @@ import createReadisClient from "./Libs/redis";
 import JWTR from "jwt-redis";
 import passport from "passport";
 import "./api/v1/helpers/oauth/strategies/google";
+import "./api/v1/helpers/oauth/strategies/facebook";
+
 import config from "./Config";
 
 const server = express();

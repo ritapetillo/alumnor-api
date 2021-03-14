@@ -18,6 +18,7 @@ interface IUser extends Document {
 //interface for generic Model (methods and proprieties which are avaialble for Model)
 export interface IUserModel extends Model<IUser> {
   findOrCreate: findOrCreate;
+  editUser: editUser;
 }
 
 //@types
@@ -27,6 +28,8 @@ type findOrCreate = (
   profile: {},
   id: string
 ) => IUser | null;
+
+type editUser = (id: string, edits: {}) => IUser | null;
 type findByEmail = (email: string) => object | null;
 
 export default IUser;

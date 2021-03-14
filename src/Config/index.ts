@@ -24,4 +24,6 @@ export default {
   EMAIL_SENDER: process.env.EMAIL_SENDER,
   MONGO_URI: process.env.MONGO_URI,
   PORT: process.env.PORT,
+  FACEBOOK_APP_ID: process.env.FACEBOOK_APP_ID,
+  FACEBOOK_APP_SECRET: process.env.FACEBOOK_APP_SECRET
 };

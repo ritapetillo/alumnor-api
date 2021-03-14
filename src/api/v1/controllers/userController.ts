@@ -28,4 +28,20 @@ const getUser = async (req: any, res: Response, next: NextFunction) => {
   }
 };
 
-export default { getUsers, getUser };
+const editUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (!req.user) throw Error;
+    const currentUser: any = req.user;
+    const { email, _id } = currentUser;
+    console.log(currentUser);
+    const user = await User.editUser(_id, req.body);
+    if (!user) throw Error;
+    res.status(200).send({ user });
+  } catch (err) {
+    const error: any = new Error("No user found");
+    error.code = 401;
+    next(error);
+  }
+};
+
+export default { getUsers, getUser, editUser };

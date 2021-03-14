@@ -24,7 +24,8 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) throw Error;
-    const isPassValid = user.comparePassword(password);
+    const isPassValid = await user.comparePassword(password);
+    console.log(isPassValid);
     if (!isPassValid) throw Error;
     const tokens = await generateTokens({ _id: user._id, email });
     //send cookies
@@ -191,6 +192,26 @@ const googleAuthCallback = async (
     next(error);
   }
 };
+
+const facebookAuthCallback = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) throw Error;
+    const { user, tokens }: any = req.user;
+    const cookies = await generateCookies(tokens, res);
+    res.redirect(`${config.FE_URI}`);
+
+    res.send(req.user);
+  } catch (err) {
+    console.log(err);
+    const error: any = new Error(`User not found`);
+    error.code = 404;
+    next(error);
+  }
+};
 export default {
   login,
   signup,
@@ -199,4 +220,5 @@ export default {
   sendPasswordResetLink,
   resetPasword,
   googleAuthCallback,
+  facebookAuthCallback,
 };

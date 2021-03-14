@@ -1,8 +1,13 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Query, Schema } from "mongoose";
 import IUser, { IUserModel } from "../interfaces/IUser";
 import bcrypt from "bcrypt";
 import userRoutes from "../services/users";
 import { createNewGoogleUser } from "../helpers/oauth/strategies/google/utils";
+import { createNewFbUser } from "../helpers/oauth/strategies/facebook/utils";
+import { NextFunction } from "express";
+import { isNamedExportBindings } from "typescript";
+import { use } from "passport";
+
 const options = { discriminatorKey: "role", timeStamp: true };
 
 const userSchema = new Schema<IUser>(
@@ -63,6 +68,19 @@ userSchema.pre<IUser>("save", async function (next) {
   }
 });
 
+// userSchema.post<Query<IUser, IUser>>("findOneAndUpdate", async function () {
+//   try {
+//     const pwPassedIn = this!.getUpdate()!.$set!.password!;
+//     if (pwPassedIn) {
+//       const salt = await bcrypt.genSalt();
+//       const pass = await bcrypt.hash(pwPassedIn, salt);
+//       this.set("password", pass);
+//     }
+//   } catch (err) {
+//     console.log(err);
+//   }
+// });
+
 userSchema.methods.comparePassword = async function (candidatePassword, next) {
   try {
     const isValid = await bcrypt.compare(
@@ -74,6 +92,8 @@ userSchema.methods.comparePassword = async function (candidatePassword, next) {
     return null;
   }
 };
+
+//STATIC METHODS
 
 //method to findOneOrCreate
 userSchema.statics.findOrCreate = async function (strategy = "", profile, id) {
@@ -93,11 +113,35 @@ userSchema.statics.findOrCreate = async function (strategy = "", profile, id) {
           return user;
         } else return null;
       }
+      if (strategy == "facebookId") {
+        const user = await createNewFbUser(profile);
+        if (user) {
+          return user;
+        } else return null;
+      }
       const user = new this(profile);
       user.role = "student";
       const userSaved = await user.save();
       return userSaved;
     }
+  } catch (err) {
+    return null;
+  }
+};
+
+//method to edit user
+userSchema.statics.editUser = async function (id, edits) {
+  try {
+    if (edits.password) {
+      const salt = await bcrypt.genSalt();
+      edits.password = await bcrypt.hash(edits.password, salt);
+    }
+    const user = await this.findByIdAndUpdate(
+      id,
+      { $set: edits },
+      { new: true, runValidators: true }
+    );
+    return user;
   } catch (err) {
     return null;
   }
