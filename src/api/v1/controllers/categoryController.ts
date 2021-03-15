@@ -3,6 +3,20 @@ import { idText } from "typescript";
 import { generateError } from "../helpers/errors";
 import Category from "../models/Category";
 
+const viewAllCategories = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const categories = await Category.find();
+    res.status(201).send({ categories });
+  } catch (err) {
+    const message = "There was a problem retrieving categories";
+    generateError(message, 404, next);
+  }
+};
+
 const createCategory = async (
   req: Request,
   res: Response,
@@ -57,4 +71,9 @@ const deleteCategory = async (
   }
 };
 
-export default { createCategory, editCategory, deleteCategory };
+export default {
+  createCategory,
+  editCategory,
+  deleteCategory,
+  viewAllCategories,
+};

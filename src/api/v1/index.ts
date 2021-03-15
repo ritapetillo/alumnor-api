@@ -6,6 +6,7 @@ import adminRoutes from "./services/admin";
 import authRoutes from "./services/auth";
 import courseRoutes from "./services/courses";
 import categoryRoutes from "./services/categories";
+import sectionRoutes from "./services/sections";
 
 const router = express.Router();
 
@@ -17,6 +18,6 @@ router.use("/instructors", instructorRoutes);
 router.use("/auth", authRoutes);
 router.use("/courses", courseRoutes);
 router.use("/categories", categoryRoutes);
-
+router.use("/sections", sectionRoutes);
 
 export default router;

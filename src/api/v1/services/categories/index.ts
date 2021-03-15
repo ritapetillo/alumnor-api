@@ -8,6 +8,21 @@ import {
 } from "../../middlewares/auth/privileges/category";
 const categoryRouter = express.Router();
 
+////PUBLIC ROUTES
+
+//VIEW ALL CATEGORIES
+// api/v1/category/
+categoryRouter.get(
+  "/",
+  categoryController.viewAllCategories
+);
+
+
+
+
+
+
+//PRIVTE ROUTES  ------ ADMIN
 //CREATE A CATEGORY
 // api/v1/category/new
 categoryRouter.post(
