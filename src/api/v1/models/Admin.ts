@@ -9,20 +9,24 @@ const adminSchema: Schema = new Schema(
     confirmed: { type: Boolean, default: false },
     privileges: {
       course: {
-        type:Array,
-        default: [CREATE, DELETE, READ, EDIT]
+        type: Array,
+        default: [CREATE, DELETE, READ, EDIT],
       },
       student: {
-        type:Array,
-        default: [CREATE, DELETE, READ, EDIT]
+        type: Array,
+        default: [CREATE, DELETE, READ, EDIT],
       },
       instructor: {
-        type:Array,
-        default: [CREATE, DELETE, READ, EDIT]
+        type: Array,
+        default: [CREATE, DELETE, READ, EDIT],
       },
       admin: {
-        type:Array,
-        default: [CREATE, DELETE, READ, EDIT]
+        type: Array,
+        default: [CREATE, DELETE, READ, EDIT],
+      },
+      category: {
+        type: Array,
+        default: [CREATE, DELETE, READ, EDIT],
       },
     },
   },

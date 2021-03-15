@@ -5,10 +5,16 @@ import {
   canCreateCourse,
   canDeleteCourse,
   canEditCourse,
-} from "../../middlewares/auth/privileges/courses";
+} from "../../middlewares/auth/privileges/course";
 import parser from "../../helpers/cloudinary/course";
 const courseRouter = express.Router();
 
+//////////////////PUBLIC ROUTES//////////////////
+//VIEW ALL COURSES
+// api/v1/courses
+courseRouter.get("/", courseController.viewAllCourses);
+
+///////////////////PRIVATE ROUTES/////////////////////////
 //CREATE A COURSE
 // api/v1/courses/new
 courseRouter.post(

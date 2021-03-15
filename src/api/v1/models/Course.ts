@@ -16,7 +16,7 @@ const courseSchema = new mongoose.Schema({
   picture: {
     trype:String
   },
-  category: [
+  categories: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "categories",

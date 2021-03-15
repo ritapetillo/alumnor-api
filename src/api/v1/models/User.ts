@@ -1,12 +1,9 @@
 import mongoose, { Query, Schema } from "mongoose";
 import IUser, { IUserModel } from "../interfaces/IUser";
 import bcrypt from "bcrypt";
-import userRoutes from "../services/users";
 import { createNewGoogleUser } from "../helpers/oauth/strategies/google/utils";
 import { createNewFbUser } from "../helpers/oauth/strategies/facebook/utils";
-import { NextFunction } from "express";
-import { isNamedExportBindings } from "typescript";
-import { use } from "passport";
+
 
 const options = { discriminatorKey: "role", timeStamp: true };
 

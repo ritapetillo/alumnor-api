@@ -2,6 +2,21 @@ import { Request, Response, NextFunction } from "express";
 import Course from "../models/Course";
 import { ICourse } from "../interfaces/ICourse";
 import User from "../models/User";
+import { generateError } from "../helpers/errors";
+
+const viewAllCourses = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const courses = await Course.find();
+    res.status(201).send({ courses });
+  } catch (err) {
+    const message = "There was an error retrieving courses";
+    generateError(message, 404, next);
+  }
+};
 
 const createCourse = async (
   req: Request,
@@ -109,5 +124,6 @@ export default {
   deleteCourse,
   addInstructor,
   removeInstructor,
-  uploadPicture
+  uploadPicture,
+  viewAllCourses
 };
