@@ -1,12 +1,11 @@
 import express from "express";
 import courseController from "../../controllers/courseController";
-import passport from "passport";
 import { authenticateUser } from "../../middlewares/auth";
 import {
   canCreateCourse,
   canDeleteCourse,
   canEditCourse,
-} from "../../middlewares/auth/priviledges/courses";
+} from "../../middlewares/auth/privileges/courses";
 import parser from "../../helpers/cloudinary/course";
 const courseRouter = express.Router();
 

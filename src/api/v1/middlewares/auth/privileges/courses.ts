@@ -11,7 +11,7 @@ export const canEditCourse = async (
     const user = await User.findById(req.user!._id);
     const course = await Course.findById(req.params.id);
     if (user && course) {
-      if (user.priviledges?.course.includes("EDIT")) {
+      if (user.privileges?.course.includes("EDIT")) {
         if (user.role === "admin" || course.instructors.includes(user._id)) {
           req.course = course;
           next();
@@ -34,7 +34,7 @@ export const canDeleteCourse = async (
     const user = await User.findById(req.user!._id);
     const course = await Course.findById(req.params.id);
     if (user && course) {
-      if (user.priviledges?.course.includes("DELETE")) {
+      if (user.privileges?.course.includes("DELETE")) {
         if (user.role === "admin" || course.instructors.includes(user._id)) {
           req.course = course;
           next();
@@ -56,7 +56,7 @@ export const canCreateCourse = async (
   try {
     const user = await User.findById(req.user!._id);
     if (user) {
-      if (user.priviledges?.course.includes("CREATE")) {
+      if (user.privileges?.course.includes("CREATE")) {
         next();
       } else throw Error;
     } else throw Error;

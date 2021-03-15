@@ -17,7 +17,7 @@ const instructorSchema: Schema = new Schema(
       type: Boolean,
       default: false,
     },
-    priviledges: {
+    privileges: {
       course: {
         type: Array,
         default: [CREATE, DELETE, READ, EDIT],

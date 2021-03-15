@@ -7,7 +7,7 @@ const options = { discriminatorKey: "role" };
 const adminSchema: Schema = new Schema(
   {
     confirmed: { type: Boolean, default: false },
-    priviledges: {
+    privileges: {
       course: {
         type:Array,
         default: [CREATE, DELETE, READ, EDIT]

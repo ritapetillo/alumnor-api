@@ -12,7 +12,7 @@ interface IUser extends Document {
   dateBirth: Date;
   refreshToken: String;
   verified: Boolean;
-  priviledges?: {
+  privileges?: {
     student: [String];
     instructor: [String];
     course: [String];

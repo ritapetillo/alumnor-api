@@ -49,8 +49,8 @@ const editStudent = async (req: Request, res: Response, next: NextFunction) => {
     const reqUser: any = req.user;
     const currentUser = await User.findById(reqUser._id);
 
-    if (!currentUser?.priviledges) throw Error;
-    const canEdit = currentUser.priviledges.student.includes("EDIT");
+    if (!currentUser?.privileges) throw Error;
+    const canEdit = currentUser.privileges.student.includes("EDIT");
     if (!canEdit) {
       const error: any = new Error("You cannot edit this student");
       error.code = 403;
@@ -76,8 +76,8 @@ const deleteStudent = async (
     if (!req.user) throw Error;
     const reqUser: any = req.user;
     const currentUser = await User.findById(reqUser._id);
-    if (!currentUser?.priviledges) throw Error;
-    const canDelete = currentUser.priviledges.student.includes("DELETE");
+    if (!currentUser?.privileges) throw Error;
+    const canDelete = currentUser.privileges.student.includes("DELETE");
     if (!canDelete) {
       const error: any = new Error("You cannot delete this student");
       error.code = 403;
