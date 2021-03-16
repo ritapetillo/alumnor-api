@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import config from "../../../../Config";
 import { decodeJWT } from "../../helpers/tokens";
 import { RequestUser } from "../../interfaces/IRequest";
-import User from "../../models/User";
+import User from "../../models/User/User";
 
 export const authenticateUser = async (
   req: Request,

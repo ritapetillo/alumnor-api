@@ -16,7 +16,7 @@ const sectionSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    activities: [{}],
+    activities: [{ type: mongoose.Schema.Types.ObjectId, ref: "activities" }],
   },
   { timestamps: true }
 );

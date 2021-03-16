@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import IStudent from "../interfaces/IStudent";
+import IStudent from "../../interfaces/IStudent";
 import User from "./User";
 
 

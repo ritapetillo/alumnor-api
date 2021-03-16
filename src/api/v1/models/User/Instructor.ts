@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
-import IInstructor from "../interfaces/IInstructor";
+import IInstructor from "../../interfaces/IInstructor";
 import User from "./User";
-import { CREATE, DELETE, EDIT, READ } from "../helpers/models/priviledges";
+import { CREATE, DELETE, EDIT, READ } from "../../helpers/models/priviledges";
 
 const options = { discriminatorKey: "role" };
 

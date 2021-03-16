@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { Error } from "mongoose";
 import { RequestUser } from "../interfaces/IRequest";
 import IUser from "../interfaces/IUser";
-import User from "../models/User";
+import User from "../models/User/User";
 
 const getUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {

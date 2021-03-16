@@ -8,7 +8,7 @@ import {
   verifyRefreshToken,
   verifyVerificationEmailToken,
 } from "../helpers/tokens";
-import User from "../models/User";
+import User from "../models/User/User";
 import {
   generetateResetPasswordEmail,
   generetateVerificationEmail,

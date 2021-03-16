@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as FacebookStrategy } from "passport-facebook";
 import config from "../../../../../../Config";
-import User from "../../../../models/User";
+import User from "../../../../models/User/User";
 import { generateTokens } from "../../../tokens";
 // const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET }= process.env
 

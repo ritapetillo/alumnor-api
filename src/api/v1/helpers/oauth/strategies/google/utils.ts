@@ -1,4 +1,4 @@
-import User from "../../../../models/User";
+import User from "../../../../models/User/User";
 import IUser from "../../../../interfaces/IUser";
 import { IGoogleProfile } from "../../../../interfaces/IStrategies";
 

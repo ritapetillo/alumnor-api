@@ -1,8 +1,8 @@
 import mongoose, { Query, Schema } from "mongoose";
-import IUser, { IUserModel } from "../interfaces/IUser";
+import IUser, { IUserModel } from "../../interfaces/IUser";
 import bcrypt from "bcrypt";
-import { createNewGoogleUser } from "../helpers/oauth/strategies/google/utils";
-import { createNewFbUser } from "../helpers/oauth/strategies/facebook/utils";
+import { createNewGoogleUser } from "../../helpers/oauth/strategies/google/utils";
+import { createNewFbUser } from "../../helpers/oauth/strategies/facebook/utils";
 
 
 const options = { discriminatorKey: "role", timeStamp: true };

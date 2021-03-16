@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import User from "../../../models/User";
+import User from "../../../models/User/User";
 import { generateError } from "../../../helpers/errors";
 
 export const canCreatetCategory = async (

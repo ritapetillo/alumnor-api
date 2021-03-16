@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
-import { CREATE, DELETE, EDIT, READ } from "../helpers/models/priviledges";
-import IAdmin from "../interfaces/IAdmin";
+import { CREATE, DELETE, EDIT, READ } from "../../helpers/models/priviledges";
+import IAdmin from "../../interfaces/IAdmin";
 import User from "./User";
 const options = { discriminatorKey: "role" };
 

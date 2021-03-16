@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import Course from "../models/Course";
 import { ICourse } from "../interfaces/ICourse";
-import User from "../models/User";
+import User from "../models/User/User";
 import { generateError } from "../helpers/errors";
+import Activity from "../models/Activity/Activity";
 
 const viewAllCourses = async (
   req: Request,
@@ -14,6 +15,20 @@ const viewAllCourses = async (
     res.status(201).send({ courses });
   } catch (err) {
     const message = "There was an error retrieving courses";
+    generateError(message, 404, next);
+  }
+};
+
+const viewAllActivitiesByCourse = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const activities = await Activity.find({ courseId: req.params.id });
+    res.status(201).send({ activities });
+  } catch (err) {
+    const message = "There was an error retrieving activities for this course";
     generateError(message, 404, next);
   }
 };
@@ -125,5 +140,6 @@ export default {
   addInstructor,
   removeInstructor,
   uploadPicture,
-  viewAllCourses
+  viewAllCourses,
+  viewAllActivitiesByCourse
 };

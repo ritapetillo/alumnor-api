@@ -6,8 +6,8 @@ import {
   sendEmail,
 } from "../helpers/emails/sendiGrid";
 import { generateEmailVerificationToken } from "../helpers/tokens";
-import Student from "../models/Student";
-import User from "../models/User";
+import Student from "../models/User/Student";
+import User from "../models/User/User";
 
 const registerStudent = async (
   req: Request,

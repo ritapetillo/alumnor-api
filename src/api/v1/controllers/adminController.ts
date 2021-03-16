@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import Admin from "../models/Admin";
-import User from "../models/User";
+import Admin from "../models/User/Admin";
+import User from "../models/User/User";
 
 const registerAdmin = async (
   req: Request,

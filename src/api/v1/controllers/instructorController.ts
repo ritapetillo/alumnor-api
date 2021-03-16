@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { Error } from "mongoose";
-import Instructor from "../models/Instructor";
-import User from "../models/User";
+import Instructor from "../models/User/Instructor";
+import User from "../models/User/User";
 
 const registerInstructor = async (
   req: Request,

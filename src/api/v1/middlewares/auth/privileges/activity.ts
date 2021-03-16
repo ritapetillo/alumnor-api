@@ -3,7 +3,7 @@ import User from "../../../models/User/User";
 import Course from "../../../models/Course";
 import { generateError } from "../../../helpers/errors";
 
-export const canEditSection = async (
+export const canEditActivity = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -59,8 +59,10 @@ export const canCreateSection = async (
       } else throw Error;
     } else throw Error;
   } catch (err) {
-    generateError("User not authorized to create sections for this course", 403, next);
+    generateError(
+      "User not authorized to create sections for this course",
+      403,
+      next
+    );
   }
 };
-
-
