@@ -5,7 +5,7 @@ import {
   canCreateSection,
   canDeleteSection,
   canEditSection,
-} from "../../middlewares/auth/privileges/sections";
+} from "../../middlewares/privileges/sections";
 const sectionRouter = express.Router();
 
 //////////////////PUBLIC ROUTES//////////////////

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import User from "../../../models/User/User";
-import Course from "../../../models/Course";
-import { generateError } from "../../../helpers/errors";
+import User from "../../models/User/User";
+import Course from "../../models/Course";
+import { generateError } from "../../helpers/errors";
 
 export const canEditActivity = async (
   req: Request,

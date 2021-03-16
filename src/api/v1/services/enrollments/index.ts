@@ -6,7 +6,7 @@ import {
   canDeleteEnrollment,
   canEditEnrollment,
   canReadEnrollments,
-} from "../../middlewares/auth/privileges/enrollments";
+} from "../../middlewares/privileges/enrollments";
 const enrollmentRouter = express.Router();
 
 ////PUBLIC ROUTES

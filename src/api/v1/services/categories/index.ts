@@ -5,7 +5,7 @@ import {
   canCreatetCategory,
   canDeleteCategory,
   canEditCategory,
-} from "../../middlewares/auth/privileges/category";
+} from "../../middlewares/privileges/category";
 const categoryRouter = express.Router();
 
 ////PUBLIC ROUTES

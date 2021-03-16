@@ -1,12 +1,12 @@
 import express from "express";
 import activityController from "../../controllers/activityController";
 import { authenticateUser } from "../../middlewares/auth";
-import { canDeleteCourse } from "../../middlewares/auth/privileges/course";
+import { canDeleteCourse } from "../../middlewares/privileges/course";
 import {
   canCreateSection,
   canDeleteSection,
   canEditSection,
-} from "../../middlewares/auth/privileges/sections";
+} from "../../middlewares/privileges/sections";
 const activityRouter = express.Router();
 
 //////////////////PUBLIC ROUTES//////////////////

@@ -5,6 +5,7 @@ import User from "../models/User/User";
 import { generateError } from "../helpers/errors";
 import Activity from "../models/Activity/Activity";
 
+// PUBLIC ROUTES
 const viewAllCourses = async (
   req: Request,
   res: Response,
@@ -18,6 +19,23 @@ const viewAllCourses = async (
     generateError(message, 404, next);
   }
 };
+
+
+//PRIVATE ROUTES FOR AUTHORIZED TO SEE THE COUSE - USER + INSTRUCTOR + ALL ADMIN
+const viewACourse = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const course = await Course.findById(req.params.id);
+    res.status(201).send({ course });
+  } catch (err) {
+    const message = "There was an error retrieving this course";
+    generateError(message, 404, next);
+  }
+};
+
 
 const viewAllActivitiesByCourse = async (
   req: Request,
@@ -141,5 +159,6 @@ export default {
   removeInstructor,
   uploadPicture,
   viewAllCourses,
-  viewAllActivitiesByCourse
+  viewAllActivitiesByCourse,
+  viewACourse
 };

@@ -2,10 +2,11 @@ import express from "express";
 import courseController from "../../controllers/courseController";
 import { authenticateUser } from "../../middlewares/auth";
 import {
+  canAttendCourse,
   canCreateCourse,
   canDeleteCourse,
   canEditCourse,
-} from "../../middlewares/auth/privileges/course";
+} from "../../middlewares/privileges/course";
 import parser from "../../helpers/cloudinary/course";
 const courseRouter = express.Router();
 
@@ -15,6 +16,16 @@ const courseRouter = express.Router();
 courseRouter.get("/", courseController.viewAllCourses);
 
 ///////////////////PRIVATE ROUTES/////////////////////////
+
+//VIEW A COURSE
+// api/v1/courses/:id
+courseRouter.get(
+  "/:id",
+  authenticateUser,
+  canAttendCourse,
+  courseController.viewACourse
+);
+
 //CREATE A COURSE
 // api/v1/courses/new
 courseRouter.post(

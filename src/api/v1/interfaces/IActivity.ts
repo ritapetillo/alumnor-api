@@ -9,7 +9,7 @@ export interface IActivity extends Document {
   completed: boolean;
   createdBy: string;
   category: String;
-  submissions?: string;
+  submissions?: [string];
   courseId: string;
   sectionId: string;
 }

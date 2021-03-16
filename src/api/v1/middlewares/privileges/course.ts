@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import User from "../../../models/User/User";
-import Course from "../../../models/Course";
+import User from "../../models/User/User";
+import Course from "../../models/Course";
+import Enrollment from "../../models/Enrollment";
+import { generateError } from "../../helpers/errors";
 
 export const canEditCourse = async (
   req: Request,
@@ -64,5 +66,38 @@ export const canCreateCourse = async (
     const error: any = new Error("User not authenticated or Course not found");
     error.code = 401;
     next(error);
+  }
+};
+
+export const canAttendCourse = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user!._id;
+    if (!userId) throw Error;
+    const course = await Course.findById(req.params.id);
+    const enrollment = await Enrollment.findOne({
+      courseId: req.params.courseId,
+      userId: userId,
+    });
+    if (!course) throw Error;
+    const user = await User.findById(userId);
+    if (user) {
+      if (
+        user.role === "admin" ||
+        course.instructors.includes(userId) ||
+        enrollment
+      ) {
+        next();
+      } else throw Error;
+    } else throw Error;
+  } catch (err) {
+    generateError(
+      "User not authorized to view this course or course not found",
+      403,
+      next
+    );
   }
 };
