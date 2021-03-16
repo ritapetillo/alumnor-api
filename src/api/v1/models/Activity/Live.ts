@@ -12,6 +12,7 @@ const liveSchema: Schema = new Schema(
     recordingLink: {
       type: String,
     },
+    attendence: [],
   },
   options
 );

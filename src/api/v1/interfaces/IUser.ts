@@ -18,6 +18,7 @@ interface IUser extends Document {
     course: [String];
     admin: [String];
     category: [String];
+    enrollment:[String]
   };
   role: String;
   comparePassword: comparePasswordFunction;

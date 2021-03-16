@@ -1,6 +1,6 @@
 import { Response } from "express";
 import config from "../../../../Config";
-import { ITokens } from "../../interfaces/Itoekens";
+import { ITokens } from "../../interfaces/ITokens";
 
 export const generateCookies = async (
   { accessToken, refreshToken }: ITokens,

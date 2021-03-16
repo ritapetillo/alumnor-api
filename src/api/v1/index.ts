@@ -7,10 +7,10 @@ import authRoutes from "./services/auth";
 import courseRoutes from "./services/courses";
 import categoryRoutes from "./services/categories";
 import sectionRoutes from "./services/sections";
+import enrollmentRoutes from "./services/enrollments";
 import activityRoutes from "./services/activities";
 
 const router = express.Router();
-
 //routes
 router.use("/users", userRoutes);
 router.use("/admin", adminRoutes);
@@ -21,6 +21,6 @@ router.use("/courses", courseRoutes);
 router.use("/categories", categoryRoutes);
 router.use("/sections", sectionRoutes);
 router.use("/activities", activityRoutes);
-
+router.use("/enrollments", enrollmentRoutes);
 
 export default router;

@@ -1,4 +1,4 @@
-import { ITokens } from "./Itoekens";
+import { ITokens } from "./ITokens";
 
 export interface IGoogleProfile {
   sub: string;

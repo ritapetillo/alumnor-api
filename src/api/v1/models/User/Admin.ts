@@ -28,6 +28,10 @@ const adminSchema: Schema = new Schema(
         type: Array,
         default: [CREATE, DELETE, READ, EDIT],
       },
+      enrollment: {
+        type: Array,
+        default: [CREATE, DELETE, READ, EDIT],
+      },
     },
   },
   options

@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import JWTRedis from "jwt-redis";
 import config from "../../../../Config";
 import { jwtr } from "../../../../server";
-import { IPayloadJWTR, ITokens, IUserPayload } from "../../interfaces/Itoekens";
+import { IPayloadJWTR, ITokens, IUserPayload } from "../../interfaces/ITokens";
 // import config from "../../../../Config";
 
 export function encodeJWT(
