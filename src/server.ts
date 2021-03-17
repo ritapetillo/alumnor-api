@@ -11,6 +11,7 @@ import JWTR from "jwt-redis";
 import passport from "passport";
 import "./api/v1/helpers/oauth/strategies/google";
 import "./api/v1/helpers/oauth/strategies/facebook";
+import "./api/v1/helpers/oauth/strategies/zoom";
 
 import config from "./Config";
 

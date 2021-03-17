@@ -29,4 +29,6 @@ export default {
   CLOUD_API_KEY: process.env.CLOUD_API_KEY,
   CLOUD_API_SECRET: process.env.CLOUD_API_SECRET,
   CLOUD_NAME: process.env.CLOUD_NAME,
+  ZOOM_CLIENT_ID: process.env.ZOOM_CLIENT_ID,
+  ZOOM_CLIENT_SECRET: process.env.ZOOM_CLIENT_SECRET,
 };

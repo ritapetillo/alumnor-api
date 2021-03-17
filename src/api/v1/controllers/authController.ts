@@ -17,6 +17,10 @@ import {
 import { generateEmailVerificationToken } from "../helpers/tokens";
 import { IGoogleUserPayload } from "../interfaces/IStrategies";
 import config from "../../../Config";
+import { generateZoomCookies } from "../helpers/cookies/zoomCookies";
+import axios from "axios";
+import Config from "../../../Config";
+import { ITokens } from "../interfaces/ITokens";
 
 //LOGIN CONTROLLER
 const login = async (req: Request, res: Response, next: NextFunction) => {
@@ -212,6 +216,69 @@ const facebookAuthCallback = async (
     next(error);
   }
 };
+
+//ZOOM AUTH0
+const zoomAuthCallback = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) throw Error;
+    const { profile, tokens }: any = req.user;
+    const cookies = await generateZoomCookies(tokens, res);
+    res.redirect("/");
+    // if (!req.user) throw Error;
+    // res.send(req.user);
+  } catch (err) {
+    console.log(err);
+    const error: any = new Error(`User not found`);
+    error.code = 404;
+    next(error);
+  }
+};
+
+const zoomRefreshToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { zoomrefresh }: any = req.headers;
+    const uri = `https://zoom.us/oauth/token?grant_type=refresh_token&refresh_token=${zoomrefresh}`;
+    const base64 = Buffer.from(
+      `${Config.ZOOM_CLIENT_ID}:${Config.ZOOM_CLIENT_SECRET}`
+    ).toString("base64");
+    const config: any = {
+      method: "post",
+      url: uri,
+      headers: {
+        Authorization: "Basic " + base64,
+        "Content-Type": "application/json",
+      },
+      data: "",
+    };
+    console.log();
+    const resp = await axios(config);
+    console.log(resp);
+    const { access_token, refresh_token }: any = await resp.data;
+    const tokens: ITokens = {
+      accessToken: access_token,
+      refreshToken: refresh_token,
+    };
+    const cookies = await generateZoomCookies(tokens, res);
+    // const zoomUser = await User.findByIdAndUpdate(req.user._id,)
+    res.send({ tokens });
+    // if (!req.user) throw Error;
+    // res.send(req.user);
+  } catch (err) {
+    console.log(err);
+    const error: any = new Error(`User not found`);
+    error.code = 404;
+    next(error);
+  }
+};
+
 export default {
   login,
   signup,
@@ -221,4 +288,6 @@ export default {
   resetPasword,
   googleAuthCallback,
   facebookAuthCallback,
+  zoomAuthCallback,
+  zoomRefreshToken,
 };
