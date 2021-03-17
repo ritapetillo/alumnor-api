@@ -39,7 +39,7 @@ export const jwtr = new JWTR(redisClient);
 //MIDDLEWARES
 server.use(express.json());
 //cors
-const whiteList = [config.FE_URI!];
+const whiteList = [config.FE_URI!, "http://localhost:3000"];
 server.use(
   cors({
     origin: whiteList,

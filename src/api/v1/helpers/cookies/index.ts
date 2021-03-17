@@ -9,15 +9,15 @@ export const generateCookies = async (
   try {
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      secure: false, //set to true when deploy
+      secure: true, //set to true when deploy
       maxAge: Number(config.ACCESS_COOKIE_EXPIRATION!),
-      //   sameSite: "none", // THIS is the config you are looing for.
+      sameSite: "none", // THIS is the config you are looing for.
     });
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: false, //set to true when deploy
+      secure: true, //set to true when deploy
       maxAge: Number(config.REFRESH_COOKIE_EXPIRATION!),
-      //   sameSite: "none", // THIS is the config you are looing for.
+      sameSite: "none", // THIS is the config you are looing for.
     });
   } catch (err) {
     console.log(err);
