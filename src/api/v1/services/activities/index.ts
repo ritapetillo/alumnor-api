@@ -18,7 +18,7 @@ activityRouter.get("/:id", activityController.viewActivity);
 //CREATE AN ACTIVITY
 // api/v1/activities/:courseId/new
 activityRouter.post(
-  "/:courseId/new",
+  "/:courseId/:sectionId/",
   authenticateUser,
   canCreateSection,
   activityController.createActivity

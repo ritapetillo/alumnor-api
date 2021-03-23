@@ -26,6 +26,15 @@ courseRouter.get(
   courseController.viewACourse
 );
 
+//VIEW ALL COURSES By CURRENT INSTRUCTOR
+// api/v1/courses/:id
+courseRouter.get(
+  "/instructor/me",
+  authenticateUser,
+  courseController.viewAllCoursesByCurrentInstructor
+);
+
+
 //CREATE A COURSE
 // api/v1/courses/new
 courseRouter.post(
@@ -43,6 +52,16 @@ courseRouter.put(
   canEditCourse,
   courseController.editCourse
 );
+
+//REORDER COURSE SECTIONS
+// api/v1/courses/reorder/:id/sections
+courseRouter.put(
+  "/reorder/:id/sections",
+  authenticateUser,
+  canEditCourse,
+  courseController.reorderCourseSections
+);
+
 
 //DELETE A COURSE
 // api/v1/courses/delete/:id

@@ -4,7 +4,6 @@ import bcrypt from "bcrypt";
 import { createNewGoogleUser } from "../../helpers/oauth/strategies/google/utils";
 import { createNewFbUser } from "../../helpers/oauth/strategies/facebook/utils";
 
-
 const options = { discriminatorKey: "role", timeStamp: true };
 
 const userSchema = new Schema<IUser>(
@@ -54,7 +53,8 @@ const userSchema = new Schema<IUser>(
 
 userSchema.pre<IUser>("save", async function (next) {
   try {
-    this.picture = `https://ui-avatars.com/api/?name=${this.firstName}+${this.lastName}&?background=random`;
+    if (!this.picture)
+      this.picture = `https://ui-avatars.com/api/?name=${this.firstName}+${this.lastName}&?background=random`;
 
     if (!this.isModified("password")) return next();
     const salt = await bcrypt.genSalt();

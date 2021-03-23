@@ -15,11 +15,16 @@ passport.use(
     async function (accessToken, refreshToken, profile, done) {
       try {
         //look for an accout with the same existing email and google Id, if I find it
-        const user = await User.findOrCreate("googleId", profile._json,profile.id);
+        const user = await User.findOrCreate(
+          "googleId",
+          profile._json,
+          profile.id
+        );
         if (!user) throw Error;
         const { _id } = user;
         const email = user.email.toString();
         const tokens = await generateTokens({ _id, email });
+
         if (!tokens) throw Error;
         return done(undefined, { user, tokens });
       } catch (err) {

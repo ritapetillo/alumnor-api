@@ -7,9 +7,8 @@ const videoSchema: Schema = new Schema(
   {
     videoLink: {
       type: String,
-      required: true,
     },
   },
   options
 );
-export default Activity.discriminator<IVideo>('video', videoSchema);
+export default Activity.discriminator<IVideo>("video", videoSchema);

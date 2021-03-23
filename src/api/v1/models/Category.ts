@@ -21,8 +21,8 @@ const categorySchema = new mongoose.Schema(
 categorySchema.pre<ICategory>("remove", async function (next: any) {
   try {
     const updateCourses = await Course.updateMany(
-      { categories: { $in: this._id } },
-      { $pull: { categories: this._id } }
+      { category: this._id },
+      { $set: { category: "" } }
     );
     next();
   } catch (err) {

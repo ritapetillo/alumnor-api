@@ -7,7 +7,6 @@ const liveSchema: Schema = new Schema(
   {
     liveLink: {
       type: String,
-      required: true,
     },
     recordingLink: {
       type: String,

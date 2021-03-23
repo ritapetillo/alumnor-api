@@ -28,10 +28,11 @@ const createActivity = async (
   try {
     const _id = req.user!._id;
     const { type } = req.body;
-    const { courseId } = req.params;
+    const { courseId,sectionId } = req.params;
     const data = {
       ...req.body,
       courseId,
+      sectionId,
       createdBy: _id,
     };
     const newActivity = createNewActivity(type, data);

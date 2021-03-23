@@ -14,11 +14,12 @@ export const createNewGoogleUser = async (profile: IGoogleProfile) => {
       role: "student",
       verified: "true",
     });
+
     const savedUser: IUser = await newUser.save();
 
     return savedUser;
   } catch (err) {
-    
+
     return null;
   }
 };

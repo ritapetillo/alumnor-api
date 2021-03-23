@@ -4,6 +4,7 @@ import { ICourse } from "../interfaces/ICourse";
 import User from "../models/User/User";
 import { generateError } from "../helpers/errors";
 import Activity from "../models/Activity/Activity";
+import { moveInArray } from "../helpers/lib/arrays";
 
 // PUBLIC ROUTES
 const viewAllCourses = async (
@@ -13,6 +14,7 @@ const viewAllCourses = async (
 ) => {
   try {
     const courses = await Course.find();
+
     res.status(201).send({ courses });
   } catch (err) {
     const message = "There was an error retrieving courses";
@@ -20,15 +22,14 @@ const viewAllCourses = async (
   }
 };
 
-
 //PRIVATE ROUTES FOR AUTHORIZED TO SEE THE COUSE - USER + INSTRUCTOR + ALL ADMIN
-const viewACourse = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const viewACourse = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const course = await Course.findById(req.params.id);
+    const course = await Course.findById(req.params.id).populate({
+      path: "sections",
+      populate: { path: "activities" },
+    });
+    console.log(course);
     res.status(201).send({ course });
   } catch (err) {
     const message = "There was an error retrieving this course";
@@ -36,6 +37,23 @@ const viewACourse = async (
   }
 };
 
+const viewAllCoursesByCurrentInstructor = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const id = req.user!._id;
+    if (!id) throw Error;
+    const courses = await Course.find({ instructors: { $in: [id] } });
+
+    res.status(200).send({ courses });
+  } catch (err) {
+    console.log(err);
+    const message = "There was an error retrieving courses";
+    generateError(message, 404, next);
+  }
+};
 
 const viewAllActivitiesByCourse = async (
   req: Request,
@@ -57,8 +75,15 @@ const createCourse = async (
   next: NextFunction
 ) => {
   try {
-    const newCourse: ICourse = new Course(req.body);
+    const id = req.user!._id;
+    if (!id) throw Error;
+    const newCourse: ICourse = new Course({
+      ...req.body,
+      createdBy: id,
+    });
+    newCourse.instructors.push(id);
     const savedCourse = await newCourse.save();
+    console.log(savedCourse);
     res.status(201).send({ course: savedCourse });
   } catch (err) {
     const error: any = new Error("There was an error with the course creation");
@@ -78,6 +103,27 @@ const editCourse = async (req: Request, res: Response, next: NextFunction) => {
     next(error);
   }
 };
+
+const reorderCourseSections = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const courseToEdit = req.course;
+    const { from, to } = req.body;
+    const sections = courseToEdit.sections;
+    moveInArray(sections, from, to, sections[from]);
+    await courseToEdit?.update({ $set: { sections } });
+    console.log(courseToEdit);
+    res.status(201).send({ course: courseToEdit });
+  } catch (err) {
+    const error: any = new Error("There was an error editing this course");
+    error.code = 404;
+    next(error);
+  }
+};
+
 const deleteCourse = async (
   req: Request,
   res: Response,
@@ -160,5 +206,7 @@ export default {
   uploadPicture,
   viewAllCourses,
   viewAllActivitiesByCourse,
-  viewACourse
+  viewACourse,
+  viewAllCoursesByCurrentInstructor,
+  reorderCourseSections,
 };
