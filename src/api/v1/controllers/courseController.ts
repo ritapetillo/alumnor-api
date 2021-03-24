@@ -29,7 +29,6 @@ const viewACourse = async (req: Request, res: Response, next: NextFunction) => {
       path: "sections",
       populate: { path: "activities" },
     });
-    console.log(course);
     res.status(201).send({ course });
   } catch (err) {
     const message = "There was an error retrieving this course";
@@ -49,7 +48,6 @@ const viewAllCoursesByCurrentInstructor = async (
 
     res.status(200).send({ courses });
   } catch (err) {
-    console.log(err);
     const message = "There was an error retrieving courses";
     generateError(message, 404, next);
   }
@@ -83,7 +81,6 @@ const createCourse = async (
     });
     newCourse.instructors.push(id);
     const savedCourse = await newCourse.save();
-    console.log(savedCourse);
     res.status(201).send({ course: savedCourse });
   } catch (err) {
     const error: any = new Error("There was an error with the course creation");
@@ -153,7 +150,6 @@ const addInstructor = async (
     );
     res.status(201).send({ course: courseToEdit });
   } catch (err) {
-    console.log;
     const error: any = new Error("There was an error adding the instructor");
     error.code = 404;
     next(error);

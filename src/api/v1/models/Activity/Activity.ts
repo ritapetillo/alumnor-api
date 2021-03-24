@@ -19,7 +19,7 @@ const activitiesSchema = new Schema<IActivity>(
       type: String,
     },
     links: [String],
-    uploads: [String],
+    uploads: [],
     deadline: {
       type: Date,
     },

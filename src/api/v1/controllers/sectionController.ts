@@ -29,6 +29,7 @@ const createSection = async (
       courseId,
     });
     const savedSection = await newSection.save();
+    console.log(savedSection);
     res.status(201).send({ section: savedSection });
   } catch (err) {
     const error: any = new Error(

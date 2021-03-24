@@ -109,8 +109,6 @@ export const verifyVerificationEmailToken = async (token: string) => {
   }
 };
 
-
-
 export const generatePasswordResetToken = async (
   payload: IUserPayload
 ): Promise<string | null> => {

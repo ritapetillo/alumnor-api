@@ -1,5 +1,6 @@
 import express from "express";
 import activityController from "../../controllers/activityController";
+import parser from "../../helpers/cloudinary/files";
 import { authenticateUser } from "../../middlewares/auth";
 import { canDeleteCourse } from "../../middlewares/privileges/course";
 import {
@@ -31,6 +32,25 @@ activityRouter.put(
   authenticateUser,
   canEditSection,
   activityController.editActivity
+);
+
+//UPLOAD FILES
+// api/v1/activities/:courseId/edit/:id
+activityRouter.post(
+  "/:courseId/:id/upload",
+  authenticateUser,
+  canEditSection,
+  parser.array("files"),
+  activityController.uploadFiles
+);
+
+//DELETE FILE
+// api/v1/activities/:courseId/:id/file/delete
+activityRouter.put(
+  "/:courseId/:id/file/delete",
+  authenticateUser,
+  canEditSection,
+  activityController.deleteFile
 );
 
 //DELETE AN ACTIVITY

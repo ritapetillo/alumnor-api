@@ -28,7 +28,7 @@ const createActivity = async (
   try {
     const _id = req.user!._id;
     const { type } = req.body;
-    const { courseId,sectionId } = req.params;
+    const { courseId, sectionId } = req.params;
     const data = {
       ...req.body,
       courseId,
@@ -73,9 +73,7 @@ const deleteActivity = async (
 ) => {
   try {
     const { id } = req.params;
-    console.log(id);
     const activityToDelete = await Activity.findById(id);
-    console.log(activityToDelete);
     if (!activityToDelete) {
       generateError("This section does not exist", 404, next);
     } else {
@@ -86,10 +84,55 @@ const deleteActivity = async (
     generateError("There was an error deleting this activity", 404, next);
   }
 };
+const uploadFiles = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    if (!req.user) throw Error;
+
+    if (req.files) {
+      const { files }: any = req;
+      files.forEach(async (file: any) => {
+        const fileObj: any = {
+          path: file.path,
+          size: file.size,
+          type: file.mimetype,
+          name: file.originalname,
+        };
+        const editedAct = await Activity.findByIdAndUpdate(id, {
+          $addToSet: { uploads: fileObj },
+        });
+        console.log(editedAct);
+      });
+      res.status(200).send("images uploaded");
+    } else throw Error;
+  } catch (err) {
+    console.log(err);
+    const error: any = new Error("It was not possible to upload the picture");
+    error.code = 401;
+    next(error);
+  }
+};
+
+const deleteFile = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    console.log(req.body);
+    const activityToEdit = await Activity.findByIdAndUpdate(
+      id,
+      { $pull: { uploads: { path: req.body.path } } },
+      { new: true }
+    );
+    res.status(200).send({ activity: activityToEdit });
+  } catch (err) {
+    generateError("There was an error editing this activity", 404, next);
+  }
+};
 
 export default {
   editActivity,
   createActivity,
   deleteActivity,
   viewActivity,
+  uploadFiles,
+  deleteFile,
 };
