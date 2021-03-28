@@ -5,10 +5,12 @@ const options = { discriminatorKey: "type" };
 
 const assignmentSchema: Schema = new Schema(
   {
-    submissions: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "submissions",
-    }],
+    submissions: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "submissions",
+      },
+    ],
   },
   options
 );

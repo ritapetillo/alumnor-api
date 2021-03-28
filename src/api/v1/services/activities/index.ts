@@ -34,6 +34,24 @@ activityRouter.put(
   activityController.editActivity
 );
 
+//EDIT AN ACTIVITY
+// api/v1/activities/:courseId/edit-live/:id
+activityRouter.put(
+  "/:courseId/edit-live/:id",
+  authenticateUser,
+  canEditSection,
+  activityController.editLiveActivity
+);
+
+//GENERATE LIVE ZOOM LINK
+// api/v1/activities/:courseId/edit/:id
+activityRouter.post(
+  "/:courseId/:id/zoom-link",
+  authenticateUser,
+  canEditSection,
+  activityController.generateLiveLink
+);
+
 //UPLOAD FILES
 // api/v1/activities/:courseId/edit/:id
 activityRouter.post(

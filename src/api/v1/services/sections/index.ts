@@ -32,6 +32,16 @@ sectionRouter.put(
   sectionController.editSection
 );
 
+//REORDER SECTION ACTIVITIES
+// api/v1/sections/:courseId/edit/:id
+sectionRouter.put(
+  "/:courseId/reorder/:id",
+  authenticateUser,
+  canEditSection,
+  sectionController.reorderSectionActions
+);
+
+
 //DELETE A SECTION
 // api/v1/sections/delete/:id
 sectionRouter.delete(

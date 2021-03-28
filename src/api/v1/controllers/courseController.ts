@@ -27,10 +27,14 @@ const viewACourse = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const course = await Course.findById(req.params.id).populate({
       path: "sections",
-      populate: { path: "activities" },
+      populate: {
+        path: "activities",
+        populate: { path: "submissions" },
+      },
     });
     res.status(201).send({ course });
   } catch (err) {
+    console.log(err);
     const message = "There was an error retrieving this course";
     generateError(message, 404, next);
   }

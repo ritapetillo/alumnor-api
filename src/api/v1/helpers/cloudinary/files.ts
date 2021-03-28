@@ -6,7 +6,7 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: "files",
-    allowed_formats:["pdf","doc","xsl","jpg","jpeg","png"]
+    allowed_formats:["pdf","doc","xsl","jpg","jpeg","png","ppt"]
   },
 });
 const parser = multer({ storage });

@@ -225,11 +225,52 @@ const zoomAuthCallback = async (
 ) => {
   try {
     if (!req.user) throw Error;
-    const { profile, tokens }: any = req.user;
+    const { profile, tokens, _id }: any = req.user;
     const cookies = await generateZoomCookies(tokens, res);
-    res.redirect("/");
+    const zoomProfile = res.cookie("zoom_acc", profile, {
+      sameSite: "none",
+      secure: true,
+      httpOnly: true,
+    });
+    const { current_url } = req.cookies;
+    res.redirect(`${config.FE_URI}${current_url}`);
+    // res.redirect(`${config.FE_URI}/zoom-mw`);
+
     // if (!req.user) throw Error;
     // res.send(req.user);
+  } catch (err) {
+    console.log(err);
+    const error: any = new Error(`User not found`);
+    error.code = 404;
+    next(error);
+  }
+};
+
+//ZOOM AUTH0
+const linkUserWithZoom = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) throw Error;
+    const _id = req.user!._id;
+    const { zoom_acc, zoomAccess, zoomRefresh } = await req.cookies;
+    const user = await User.findById(_id);
+    await User.findByIdAndUpdate(_id, {
+      $set: {
+        zoom: {
+          zoomRefreshToken: zoomRefresh,
+          zoomEmail: zoom_acc.zoomEmail,
+          zoomId: zoom_acc.zoomId,
+          zoomAccessToken: zoomAccess,
+          zoomMeetingRoom: zoom_acc.zoomMeetingRoom,
+        },
+      },
+    });
+    const { current_url } = req.cookies;
+    res.send(req.cookies);
+    // res.redirect(`${config.FE_URI}${current_url}`);
   } catch (err) {
     console.log(err);
     const error: any = new Error(`User not found`);
@@ -244,8 +285,13 @@ const zoomRefreshToken = async (
   next: NextFunction
 ) => {
   try {
-    const { zoomrefresh }: any = req.headers;
-    const uri = `https://zoom.us/oauth/token?grant_type=refresh_token&refresh_token=${zoomrefresh}`;
+    const { _id } = req.user!;
+    const user = await User.findById(_id);
+    // const { zoom_acc, zoomAccess, zoomRefresh } = await req.cookies;
+    // const { zoomrefresh }: any = req.headers;
+    if (!user?.zoom.zoomRefreshToken) throw Error;
+
+    const uri = `https://zoom.us/oauth/token?grant_type=refresh_token&refresh_token=${user.zoom.zoomRefreshToken}`;
     const base64 = Buffer.from(
       `${Config.ZOOM_CLIENT_ID}:${Config.ZOOM_CLIENT_SECRET}`
     ).toString("base64");
@@ -258,9 +304,9 @@ const zoomRefreshToken = async (
       },
       data: "",
     };
-    console.log();
+
     const resp = await axios(config);
-    console.log(resp);
+    console.log("here");
     const { access_token, refresh_token }: any = await resp.data;
     const tokens: ITokens = {
       accessToken: access_token,
@@ -268,12 +314,24 @@ const zoomRefreshToken = async (
     };
     const cookies = await generateZoomCookies(tokens, res);
     // const zoomUser = await User.findByIdAndUpdate(req.user._id,)
-    res.send({ tokens });
+    await User.findByIdAndUpdate(
+      _id,
+      {
+        $set: {
+          "zoom.zoomRefreshToken": refresh_token,
+          "zoom.zoomAccessToken": access_token,
+        },
+      },
+      { new: true }
+    );
+    res.send({ tokens, userToken: user.zoom.zoomAccessToken });
     // if (!req.user) throw Error;
     // res.send(req.user);
   } catch (err) {
     console.log(err);
-    const error: any = new Error(`User not found`);
+    const error: any = new Error(
+      `Zoom account not found, please connect to Zoom again`
+    );
     error.code = 404;
     next(error);
   }
@@ -290,4 +348,5 @@ export default {
   facebookAuthCallback,
   zoomAuthCallback,
   zoomRefreshToken,
+  linkUserWithZoom,
 };

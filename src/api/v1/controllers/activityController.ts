@@ -6,6 +6,9 @@ import Live from "../models/Activity/Live";
 import Materials from "../models/Activity/Materials";
 import Assignment from "../models/Activity/Assignment";
 import { createNewActivity } from "../helpers/models/activities";
+import User from "../models/User/User";
+import axios from "axios";
+import activityRouter from "../services/activities";
 
 const viewActivity = async (
   req: Request,
@@ -13,7 +16,12 @@ const viewActivity = async (
   next: NextFunction
 ) => {
   try {
-    const activity = await Activity.findById(req.params.id);
+    const activity = await Activity.findById(req.params.id).populate({
+      path: "submissions",
+      populate: {
+        path: "userId",
+      },
+    });
     res.status(201).send({ activity });
   } catch (err) {
     generateError("There was an error retrieving this activity", 404, next);
@@ -66,6 +74,38 @@ const editActivity = async (
     generateError("There was an error editing this activity", 404, next);
   }
 };
+
+const editLiveActivity = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    console.log(req.body);
+    let activityToEdit = await Activity.findById(id);
+    if (!activityToEdit) throw Error;
+    const liveMeeting = Object.assign(
+      activityToEdit.liveMeeting,
+      req.body.liveMeeting
+    );
+    console.log(liveMeeting);
+    const activity = await Activity.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          text: req.body.text,
+          liveMeeting: { ...liveMeeting },
+        },
+      },
+      { new: true }
+    );
+    res.status(200).send({ activity: activityToEdit });
+  } catch (err) {
+    generateError("There was an error editing this activity", 404, next);
+  }
+};
+
 const deleteActivity = async (
   req: Request,
   res: Response,
@@ -101,7 +141,6 @@ const uploadFiles = async (req: Request, res: Response, next: NextFunction) => {
         const editedAct = await Activity.findByIdAndUpdate(id, {
           $addToSet: { uploads: fileObj },
         });
-        console.log(editedAct);
       });
       res.status(200).send("images uploaded");
     } else throw Error;
@@ -116,7 +155,6 @@ const uploadFiles = async (req: Request, res: Response, next: NextFunction) => {
 const deleteFile = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    console.log(req.body);
     const activityToEdit = await Activity.findByIdAndUpdate(
       id,
       { $pull: { uploads: { path: req.body.path } } },
@@ -128,6 +166,41 @@ const deleteFile = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const generateLiveLink = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const _id = req.user!._id;
+    const user = await User.findById(_id);
+    if (!user) throw Error;
+    console.log(user);
+    console.log(user?.zoom.zoomEmail);
+    if (user.zoom) {
+      const request = await axios.post(
+        `https://api.zoom.us/v2/users/${user.zoom.zoomEmail}/meetings`,
+        req.body,
+        {
+          headers: {
+            authorization: "Bearer " + user?.zoom.zoomAccessToken,
+          },
+        }
+      );
+      const link = await request.data;
+      res.send({ link });
+    }
+  } catch (err) {
+    const error: any = new Error(
+      "It was not possible to generate a new live link"
+    );
+
+    error.code = 401;
+
+    next(error);
+  }
+};
+
 export default {
   editActivity,
   createActivity,
@@ -135,4 +208,6 @@ export default {
   viewActivity,
   uploadFiles,
   deleteFile,
+  generateLiveLink,
+  editLiveActivity,
 };

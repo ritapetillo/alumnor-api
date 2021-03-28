@@ -36,7 +36,24 @@ const activitiesSchema = new Schema<IActivity>(
     sectionId: {
       type: String,
     },
+    videoLink: {
+      type: String,
+    },
+    liveMeeting: {
+      type: {},
+    },
+    recordingLink: {
+      type: String,
+    },
+    attendence: [],
+    submissions: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "submissions",
+      },
+    ],
   },
+
   options
 );
 

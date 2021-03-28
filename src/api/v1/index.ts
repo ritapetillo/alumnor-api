@@ -9,6 +9,7 @@ import categoryRoutes from "./services/categories";
 import sectionRoutes from "./services/sections";
 import enrollmentRoutes from "./services/enrollments";
 import activityRoutes from "./services/activities";
+import submissionRoutes from "./services/submissions";
 
 const router = express.Router();
 //routes
@@ -22,5 +23,6 @@ router.use("/categories", categoryRoutes);
 router.use("/sections", sectionRoutes);
 router.use("/activities", activityRoutes);
 router.use("/enrollments", enrollmentRoutes);
+router.use("/submissions", submissionRoutes);
 
 export default router;

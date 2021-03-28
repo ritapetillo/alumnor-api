@@ -22,5 +22,9 @@ userRoutes.delete("/delete", authenticateUser, userController.deleteCurrentUser)
 //POST api/v1/users/picture
 userRoutes.post('/picture', authenticateUser,parser.single('picture'), userController.uploadPicture)
 
-
+//POST api/v1/users/current-url/:url
+userRoutes.post(
+  "/current-url",
+  userController.getCurrentUrl
+);
 export default userRoutes;

@@ -1,31 +1,33 @@
 import mongoose, { Schema } from "mongoose";
 import { generateError } from "../helpers/errors";
 import { ISubmission } from "../interfaces/ISubmission";
+import Activity from "./Activity/Activity";
 import Assignment from "./Activity/Assignment";
 
-const submissionSchema = new Schema({
-  userId: {
-    type: mongoose.Types.ObjectId,
+const submissionSchema = new Schema(
+  {
+    userId: {
+      type: mongoose.Types.ObjectId,
+      ref: "users",
+    },
+    assignmentId: {
+      type: mongoose.Types.ObjectId,
+      ref: "activities",
+    },
+    courseId: {
+      type: mongoose.Types.ObjectId,
+      ref: "courses",
+    },
+    grade: String,
+    uploads: [{}],
+    links: [String],
   },
-  assignmentId: {
-    type: mongoose.Types.ObjectId,
-  },
-  courseId: {
-    type: mongoose.Types.ObjectId,
-  },
-  title: {
-    type: String,
-  },
-  text: {
-    type: String,
-  },
-  uploads: [String],
-  links: [String],
-});
+  { timestamps: true }
+);
 
 submissionSchema.pre<ISubmission>("save", async function (next: any) {
   try {
-    const assignment = await Assignment.findByIdAndUpdate(this.assignmentId, {
+    const assignment = await Activity.findByIdAndUpdate(this.assignmentId, {
       $push: { submissions: this._id },
     });
     next();
@@ -35,8 +37,8 @@ submissionSchema.pre<ISubmission>("save", async function (next: any) {
 });
 submissionSchema.pre<ISubmission>("remove", async function (next: any) {
   try {
-    const assignment = await Assignment.findByIdAndUpdate(this.assignmentId, {
-      $pull: { submissions: this._id }
+    const assignment = await Activity.findByIdAndUpdate(this.assignmentId, {
+      $pull: { submissions: this._id },
     });
     next();
   } catch (err) {
@@ -44,4 +46,4 @@ submissionSchema.pre<ISubmission>("remove", async function (next: any) {
   }
 });
 
-export default mongoose.model<ISubmission>("sumbissions", submissionSchema);
+export default mongoose.model<ISubmission>("submissions", submissionSchema);

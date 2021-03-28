@@ -18,6 +18,8 @@ const viewAllSubmissionsByCourse = async (
   }
 };
 
+
+
 const viewAllSubmissionsByUser = async (
   req: Request,
   res: Response,
@@ -50,16 +52,56 @@ const viewAllMySubmissions = async (
   }
 };
 
-
 const createSubmission = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  const { _id } = req.user!;
+  const { courseId, assignmentId } = req.params;
   try {
-    const newSubmission = new Submission(req.body);
+    const newSubmission = new Submission({
+      userId: _id,
+      courseId,
+      assignmentId,
+      links: req.body.links,
+    });
     const savedSubmission = await newSubmission.save();
-    res.status(201).send({ submission: savedSubmission });
+    res.status(200).send({ submission: savedSubmission });
+  } catch (err) {
+    const message = "There was a problem creating a submission";
+    generateError(message, 404, next);
+  }
+};
+
+const uploadFileSubmission = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { submissionId } = req.params;
+    console.log("here");
+    console.log(req.files);
+    if (req.files) {
+      const { files }: any = req;
+      files.forEach(async (file: any) => {
+        const fileObj: any = {
+          path: file.path,
+          size: file.size,
+          type: file.mimetype,
+          name: file.originalname,
+        };
+        console.log(file);
+        const editSubmission = await Submission.findByIdAndUpdate(
+          submissionId,
+          {
+            $addToSet: { uploads: fileObj },
+          }
+        );
+      });
+      res.status(200).send("uplaoded");
+    } else throw Error;
   } catch (err) {
     const message = "There was a problem creating a submission";
     generateError(message, 404, next);
@@ -110,6 +152,7 @@ export default {
   editSubmission,
   deleteSubmission,
   viewAllSubmissionsByCourse,
-    viewAllSubmissionsByUser,
-  viewAllMySubmissions
+  viewAllSubmissionsByUser,
+  viewAllMySubmissions,
+  uploadFileSubmission,
 };

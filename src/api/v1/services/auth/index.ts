@@ -42,7 +42,17 @@ authRouter.get(
   authController.zoomAuthCallback
 );
 
-authRouter.post("/zoom/refresh", authController.zoomRefreshToken);
+authRouter.post(
+  "/zoom/refresh",
+  authenticateUser,
+  authController.zoomRefreshToken
+);
+
+authRouter.put(
+  "/zoom/link-account",
+  authenticateUser,
+  authController.linkUserWithZoom
+);
 
 // authRouter.get("/zoom", async (req, res, next) => {
 //   res.redirect(`https://zoom.us/oauth/authorize?response_type=code&client_id=${Config.ZOOM_CLIENT_ID}&redirect_uri=${Config.BE_URI}/api/v1/auth/zoom/callback

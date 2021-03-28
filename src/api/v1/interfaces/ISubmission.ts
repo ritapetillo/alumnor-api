@@ -5,8 +5,6 @@ export interface ISubmission extends Document {
   userId: string;
   assignmentId: string;
   courseId: string;
-  title: string;
-  text: string;
   uploads: [string];
   links: [string];
 }

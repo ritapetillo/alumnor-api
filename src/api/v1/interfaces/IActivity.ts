@@ -12,4 +12,5 @@ export interface IActivity extends Document {
   submissions?: [string];
   courseId: string;
   sectionId: string;
+  liveMeeting: {};
 }

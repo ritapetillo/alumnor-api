@@ -18,10 +18,17 @@ interface IUser extends Document {
     course: [String];
     admin: [String];
     category: [String];
-    enrollment:[String]
+    enrollment: [String];
   };
   role: String;
   comparePassword: comparePasswordFunction;
+  zoom: {
+    zoomId?: string;
+    zoomEmail?: string;
+    zoomMeetingRoom?: string;
+    zoomRefreshToken?: string;
+    zoomAccessToken?: string;
+  };
 }
 
 //interface for generic Model (methods and proprieties which are avaialble for Model)

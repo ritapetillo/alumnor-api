@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Error } from "mongoose";
+import { generateCookies } from "../helpers/cookies";
 import { RequestUser } from "../interfaces/IRequest";
 import IUser from "../interfaces/IUser";
 import User from "../models/User/User";
@@ -89,10 +90,30 @@ const deleteCurrentUser = async (
   }
 };
 
+const getCurrentUrl = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { url } = req.body;
+    const generateCookie = res.cookie("current_url", url, {
+      sameSite: "none",
+      secure: true,
+    });
+    res.status(200).send(url);
+  } catch (err) {
+    const error: any = new Error("No url found");
+    error.code = 401;
+    next(error);
+  }
+};
+
 export default {
   getUsers,
   getUser,
   editCurrentUser,
   deleteCurrentUser,
   uploadPicture,
+  getCurrentUrl,
 };

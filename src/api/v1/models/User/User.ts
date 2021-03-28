@@ -27,6 +27,13 @@ const userSchema = new Schema<IUser>(
     googleId: {
       type: String,
     },
+    zoom: {
+      zoomId: String,
+      zoomEmail: String,
+      zoomMeetingRoom: String,
+      zoomRefreshToken: String,
+      zoomAccessToken: String,
+    },
     headline: {
       type: String,
     },
