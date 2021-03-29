@@ -11,6 +11,9 @@ const courseSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  scheduleDescription:{
+    type:String
+  },
   highlights: {
     type: [String],
   },
@@ -26,6 +29,14 @@ const courseSchema = new mongoose.Schema({
   price: {
     type: String,
     require: true,
+  },
+    salePrice: {
+    type: String,
+    require: true,
+  },
+   coupon: {
+    code: String,
+    value: Number,
   },
   instructors: [
     {

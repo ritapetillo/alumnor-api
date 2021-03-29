@@ -27,12 +27,12 @@ categoryRouter.get(
 // api/v1/category/new
 categoryRouter.post(
   "/new",
-  authenticateUser,
-  canCreatetCategory,
+  // authenticateUser,
+  // canCreatetCategory,
   categoryController.createCategory
 );
 
-//EDIT A CATEGORY
+//EDIT A CATEGORY 
 // api/v1/categoryedit/:id
 categoryRouter.put(
   "/edit/:id",

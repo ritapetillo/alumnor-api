@@ -18,8 +18,6 @@ const viewAllSubmissionsByCourse = async (
   }
 };
 
-
-
 const viewAllSubmissionsByUser = async (
   req: Request,
   res: Response,
@@ -125,6 +123,7 @@ const editSubmission = async (
     if (!submissionToEdit) generateError("Category not found", 404, next);
     res.status(200).send({ submission: submissionToEdit });
   } catch (err) {
+    console.log(err);
     const message = "There was a problem editing this submission";
     generateError(message, 404, next);
   }

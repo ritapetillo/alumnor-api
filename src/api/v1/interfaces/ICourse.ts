@@ -9,6 +9,7 @@ export interface ICourse extends Document {
   instructors: [String];
   startDate: Date;
   endDate: Date;
+  scheduleDescription:string;
   liveSchedule: [Date];
   sections: [String];
   category: String;

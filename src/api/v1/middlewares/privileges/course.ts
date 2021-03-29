@@ -44,6 +44,7 @@ export const canDeleteCourse = async (
       } else throw Error;
     } else throw Error;
   } catch (err) {
+    console.log(err);
     const error: any = new Error("User not authenticated or Course not found");
     error.code = 401;
     next(error);

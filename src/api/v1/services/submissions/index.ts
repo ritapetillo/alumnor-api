@@ -52,7 +52,7 @@ submissionRouter.post(
   submissionController.createSubmission
 );
 
-//CREATE A SUBMISSION
+//UPLOAD DOCUMENTS TO A SUBMISSION
 // api/v1/submissions/:courseId/new
 submissionRouter.put(
   "/:courseId/upload/:submissionId",
@@ -66,7 +66,7 @@ submissionRouter.put(
 submissionRouter.put(
   "/:courseId/edit/:id",
   authenticateUser,
-  canEditOrDeleteSubmission,
+  // canEditOrDeleteSubmission,
   submissionController.editSubmission
 );
 

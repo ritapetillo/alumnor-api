@@ -26,7 +26,7 @@ const viewAllCourses = async (
 const viewACourse = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const course = await Course.findById(req.params.id).populate({
-      path: "sections",
+      path: "sections instructors",
       populate: {
         path: "activities",
         populate: { path: "submissions" },
@@ -96,7 +96,11 @@ const createCourse = async (
 const editCourse = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const courseToEdit = req.course;
-    await courseToEdit?.update({ $set: req.body });
+    if(!courseToEdit) throw Error;
+
+    await courseToEdit.update({ $set: req.body });
+        console.log(courseToEdit)
+
     res.status(201).send({ course: courseToEdit });
   } catch (err) {
     const error: any = new Error("There was an error editing this course");
@@ -186,6 +190,7 @@ const uploadPicture = async (
 ) => {
   try {
     const picture = req.file && req.file.path;
+    console.log(picture)
     if (!picture) throw Error;
     const { course } = req;
     await course.update({ $set: { picture } });

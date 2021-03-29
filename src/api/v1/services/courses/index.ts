@@ -34,7 +34,6 @@ courseRouter.get(
   courseController.viewAllCoursesByCurrentInstructor
 );
 
-
 //CREATE A COURSE
 // api/v1/courses/new
 courseRouter.post(
@@ -62,13 +61,12 @@ courseRouter.put(
   courseController.reorderCourseSections
 );
 
-
 //DELETE A COURSE
 // api/v1/courses/delete/:id
 courseRouter.delete(
   "/delete/:id",
-  canDeleteCourse,
   authenticateUser,
+  canDeleteCourse,
   courseController.deleteCourse
 );
 
@@ -92,7 +90,7 @@ courseRouter.put(
 
 //UPLOAD A PICTURE
 // api/v1/courses/:id/picture
-courseRouter.post(
+courseRouter.put(
   "/picture/:id",
   authenticateUser,
   canEditCourse,
