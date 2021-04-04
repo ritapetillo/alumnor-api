@@ -11,7 +11,7 @@
     "dev2": "NODE_ENV=production ts-node-dev --respawn dotenv/config src/server.ts",
     "dev-prod": "NODE_ENV=production nodemon -r dotenv/config src/server.ts",
     "start": "node dist/server.js",
-    "dev": "nodemon server.js",
+    "dev": "NODE_ENV=dev nodemon -r dotenv/config src/server.ts",
     "build-ts": "tsc",
     "start:dev": "nodemon --config \"./nodemon.json\"",
     "heroku-postbuild": "npm run build-ts"
@@ -44,8 +44,8 @@
     "query-to-mongo": "^0.10.1",
     "redis": "^3.0.2",
     "ts-node": "^9.1.1",
-    "custom-env": "^2.0.1"
-
+    "tsc": "^1.20150623.0",
+    "typescript": "^4.2.3"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
@@ -63,8 +63,8 @@
     "@types/passport-oauth2": "^1.4.10",
     "@types/redis": "^2.8.28",
     "@types/sendgrid": "^4.3.0",
+    "custom-env": "^2.0.1",
     "nodemon": "^2.0.7",
-    "ts-node-dev": "^1.1.6",
-    "typescript": "^4.2.3"
+    "ts-node-dev": "^1.1.6"
   }
 }

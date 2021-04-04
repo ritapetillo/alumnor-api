@@ -1,9 +1,3 @@
-import { env } from "custom-env";
-
-//set up the right .evn file
-const environment = process.env.NODE_ENV;
-env(environment);
-
 export default {
   ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
   REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET,
