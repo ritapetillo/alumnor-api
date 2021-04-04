@@ -114,6 +114,7 @@ const createCourse = async (
 const editCourse = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const courseToEdit = req.course;
+
     if (!courseToEdit) throw Error;
 
     await courseToEdit.update({ $set: req.body });
