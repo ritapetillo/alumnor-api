@@ -1,1 +1,1 @@
-declare module "@giorgosavgeris/passport-zoom-oauth2";
+declare module "@giorgosavgeris";
