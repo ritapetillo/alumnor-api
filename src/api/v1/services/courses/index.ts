@@ -15,6 +15,10 @@ const courseRouter = express.Router();
 // api/v1/courses
 courseRouter.get("/", courseController.viewAllCourses);
 
+//VIEW A COURSE PUBLIC
+// api/v1/courses/:id
+courseRouter.get("/:id/public", courseController.viewACoursePublic);
+
 ///////////////////PRIVATE ROUTES/////////////////////////
 
 //VIEW A COURSE

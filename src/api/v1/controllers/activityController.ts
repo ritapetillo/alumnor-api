@@ -8,7 +8,31 @@ import Assignment from "../models/Activity/Assignment";
 import { createNewActivity } from "../helpers/models/activities";
 import User from "../models/User/User";
 import axios from "axios";
-import activityRouter from "../services/activities";
+import Course from "../models/Course";
+import Enrollment from "../models/Enrollment";
+import { IEnrollment } from "../interfaces/IEnrollment";
+import { ObjectId } from "mongoose";
+var q2m = require("query-to-mongo");
+
+const viewActivities = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    var query = q2m(req.query);
+
+    const activities = await Activity.find(query.criteria).populate({
+      path: "submissions",
+      populate: {
+        path: "userId",
+      },
+    });
+    res.status(201).send({ activities });
+  } catch (err) {
+    generateError("There was an error retrieving this activity", 404, next);
+  }
+};
 
 const viewActivity = async (
   req: Request,
@@ -201,6 +225,41 @@ const generateLiveLink = async (
   }
 };
 
+const viewAllMyActivities = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) throw Error;
+    console.log(req.user._id);
+    const userId = req.user._id;
+    const enrollments = await Enrollment.find({
+      userId,
+    }).populate({ path: "courses" });
+    let courses: (
+      | string
+      | ObjectId
+    )[] = enrollments.map((enrollment: IEnrollment) =>
+      enrollment.courseId.toString()
+    );
+    courses = [...new Set(courses)];
+    const activites = await Activity.find().select("-submissions -attendence");
+    const activitiesPerCourse: any = courses.map((course: any) => {
+      const act = activites.filter((activity: IActivity) =>
+        req.query.type
+          ? activity.courseId == course && activity.type === req.query.type
+          : activity.courseId == course
+      );
+      return act;
+    });
+    res.status(200).send({ activities: activitiesPerCourse.flat() });
+  } catch (err) {
+    const message = "There was a problem retrieving your activities";
+    generateError(message, 404, next);
+  }
+};
+
 export default {
   editActivity,
   createActivity,
@@ -210,4 +269,6 @@ export default {
   deleteFile,
   generateLiveLink,
   editLiveActivity,
+  viewActivities,
+  viewAllMyActivities,
 };

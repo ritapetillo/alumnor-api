@@ -13,7 +13,7 @@ const viewAllCourses = async (
   next: NextFunction
 ) => {
   try {
-    const courses = await Course.find();
+    const courses = await Course.find().sort({ createdAt: 1 });
 
     res.status(201).send({ courses });
   } catch (err) {
@@ -40,6 +40,22 @@ const viewACourse = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+///find course by
+const viewACoursePublic = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const course = await Course.findCoursePublic(req.params.id);
+    res.status(201).send({ course });
+  } catch (err) {
+    console.log(err);
+    const message = "There was an error retrieving this course";
+    generateError(message, 404, next);
+  }
+};
+
 const viewAllCoursesByCurrentInstructor = async (
   req: Request,
   res: Response,
@@ -48,7 +64,9 @@ const viewAllCoursesByCurrentInstructor = async (
   try {
     const id = req.user!._id;
     if (!id) throw Error;
-    const courses = await Course.find({ instructors: { $in: [id] } });
+    const courses = await Course.find({ instructors: { $in: [id] } }).sort({
+      createdAt: -1,
+    });
 
     res.status(200).send({ courses });
   } catch (err) {
@@ -96,10 +114,10 @@ const createCourse = async (
 const editCourse = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const courseToEdit = req.course;
-    if(!courseToEdit) throw Error;
+    if (!courseToEdit) throw Error;
 
     await courseToEdit.update({ $set: req.body });
-        console.log(courseToEdit)
+    console.log(courseToEdit);
 
     res.status(201).send({ course: courseToEdit });
   } catch (err) {
@@ -190,7 +208,7 @@ const uploadPicture = async (
 ) => {
   try {
     const picture = req.file && req.file.path;
-    console.log(picture)
+    console.log(picture);
     if (!picture) throw Error;
     const { course } = req;
     await course.update({ $set: { picture } });
@@ -214,4 +232,5 @@ export default {
   viewACourse,
   viewAllCoursesByCurrentInstructor,
   reorderCourseSections,
+  viewACoursePublic,
 };

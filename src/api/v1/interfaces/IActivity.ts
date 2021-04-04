@@ -13,4 +13,5 @@ export interface IActivity extends Document {
   courseId: string;
   sectionId: string;
   liveMeeting: {};
+  type: string;
 }

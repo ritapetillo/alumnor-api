@@ -1,11 +1,12 @@
 import mongoose, { Mongoose, Schema } from "mongoose";
+import { generateError } from "../helpers/errors";
 import { IEnrollment } from "../interfaces/IEnrollment";
+import User from "./User/User";
 
 const enrollmentSchema: Schema = new Schema(
   {
-    courseId: {
-      type: String,
-    },
+    courseId: { type: mongoose.Schema.Types.ObjectId, ref: "courses" },
+
     userId: {
       type: String,
     },
@@ -20,6 +21,9 @@ const enrollmentSchema: Schema = new Schema(
     dateCompletition: {
       type: Date,
     },
+    paymentDetails: {
+      type: {},
+    },
     Notes: {
       type: String,
     },
@@ -31,6 +35,17 @@ const enrollmentSchema: Schema = new Schema(
     },
   }
 );
+
+enrollmentSchema.pre<IEnrollment>("save", async function (next: any) {
+  try {
+    const user = await User.findByIdAndUpdate(this.userId, {
+      $addToSet: { enrollments: this._id },
+    });
+    next();
+  } catch (err) {
+    generateError("There is a problem saving this enrollment", 404, next);
+  }
+});
 
 enrollmentSchema.virtual("courses", {
   ref: "courses",

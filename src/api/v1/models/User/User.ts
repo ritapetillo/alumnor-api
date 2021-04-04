@@ -54,6 +54,7 @@ const userSchema = new Schema<IUser>(
       type: Boolean,
       default: false,
     },
+    enrollments: [{ type: mongoose.Schema.Types.ObjectId, ref: "enrollments" }],
   },
   options
 );

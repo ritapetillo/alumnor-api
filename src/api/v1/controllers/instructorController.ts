@@ -73,4 +73,6 @@ const deleteInstructor = async (
     next(error);
   }
 };
+
+
 export default { registerInstructor,editInstructor,deleteInstructor };

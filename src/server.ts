@@ -42,7 +42,7 @@ server.use(express.json());
 const whiteList = [config.FE_URI!, "http://localhost:3000"];
 server.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: whiteList,
     credentials: true,
   })
 );

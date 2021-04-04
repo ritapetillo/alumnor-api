@@ -6,6 +6,7 @@ import {
   sendEmail,
 } from "../helpers/emails/sendiGrid";
 import { generateEmailVerificationToken } from "../helpers/tokens";
+import { IEnrollment } from "../interfaces/IEnrollment";
 import Student from "../models/User/Student";
 import User from "../models/User/User";
 
@@ -94,4 +95,54 @@ const deleteStudent = async (
   }
 };
 
-export default { registerStudent, editStudent, deleteStudent };
+const getAllStudentsPerCurrentInstructor = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) throw Error;
+    const reqUser: any = req.user;
+    let instructorId = reqUser._id;
+    // console.log(instructorId);
+    // if (req.params.id === "me") {
+    //   instructorId === reqUser._id;
+    // }
+    let users = await User.find()
+      .populate({
+        path: "enrollments",
+        select: "-paymentDetails",
+
+        populate: {
+          path: "courseId",
+        },
+      })
+      .select("-privileges -zoom");
+    users = users.filter((user: any) =>
+      user.enrollments.find((enrollment: any) =>
+        enrollment.courseId.instructors.includes(instructorId)
+      )
+    );
+    const usersPerInstructor = users.map((user: any) => {
+      let enrollments = user.enrollments;
+      enrollments = enrollments.filter((enrollment: any) =>
+        enrollment.courseId.instructors.includes(instructorId)
+      );
+      user.enrollments = enrollments;
+      return user;
+    });
+    res.status(201).send({ users: usersPerInstructor });
+  } catch (err) {
+    console.log(err);
+    const error: any = new Error("There was a problem with the registration");
+    error.code = 404;
+    next(error);
+  }
+};
+
+export default {
+  registerStudent,
+  editStudent,
+  deleteStudent,
+  getAllStudentsPerCurrentInstructor,
+};

@@ -19,7 +19,12 @@ const getUsers = async (req: Request, res: Response, next: NextFunction) => {
 const getUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userAuth: any = req.user;
-    const user = await User.findById(userAuth._id);
+    const user = await User.findById(userAuth._id).populate({
+      path: "enrollments",
+      populate: {
+        path: "courseId",
+      },
+    });
     if (!user) throw Error;
     res.status(200).send({ user });
   } catch (err) {
@@ -108,6 +113,8 @@ const getCurrentUrl = async (
     next(error);
   }
 };
+
+
 
 export default {
   getUsers,

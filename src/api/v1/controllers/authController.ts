@@ -72,6 +72,19 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+//LOGOUT CONTROLLER
+const logout = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await generateCookies({ accessToken: "", refreshToken: "" }, res);
+    res.redirect(`${Config.FE_URI}`);
+  } catch (err) {
+    console.log(err);
+    const error: any = new Error("There was a problem loggin in");
+    error.code = 500;
+    next(error);
+  }
+};
+
 //VERIFY EMAIL CONTROLLER
 const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -349,4 +362,5 @@ export default {
   zoomAuthCallback,
   zoomRefreshToken,
   linkUserWithZoom,
+  logout,
 };

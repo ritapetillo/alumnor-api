@@ -35,6 +35,24 @@ const viewMyEnrollments = async (
     generateError(message, 404, next);
   }
 };
+const viewEnrollmentsByUserId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  //only admin
+  try {
+    const enrollments = await Enrollment.find({
+      userId: req.params.id,
+    }).populate({ path: "courses" });
+
+    res.status(200).send({ enrollments });
+  } catch (err) {
+    const message = "There was a problem retrieving enrollments";
+    generateError(message, 404, next);
+  }
+};
+
 
 const createEnrollment = async (
   req: Request,
@@ -42,14 +60,18 @@ const createEnrollment = async (
   next: NextFunction
 ) => {
   try {
+    console.log(req.body);
     const details = {
       ...req.body,
       userId: req.user!._id,
     };
     const newEnrollment = new Enrollment(details);
+    console.log(newEnrollment);
     const savedEnrollment = await newEnrollment.save();
+
     res.status(201).send({ enrollment: savedEnrollment });
   } catch (err) {
+    console.log(err);
     const message = "There was a problem creating this enrollment";
     generateError(message, 404, next);
   }

@@ -6,6 +6,7 @@ const authRouter = express.Router();
 
 //EMAIL AND PASSWORKD AUTH
 authRouter.post("/login", authController.login);
+authRouter.post("/logout", authController.logout);
 authRouter.post("/signup", authController.signup);
 authRouter.get("/verify/:token", authController.verifyEmail);
 authRouter.post("/refresh", authController.refreshToken);

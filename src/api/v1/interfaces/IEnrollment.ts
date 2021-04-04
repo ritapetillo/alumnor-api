@@ -1,7 +1,7 @@
-import { Document } from "mongoose";
+import { Document, ObjectId } from "mongoose";
 
 export interface IEnrollment extends Document {
-  courseId: string;
+  courseId: string | ObjectId;
   userId: string;
   payed: boolean;
   approved: boolean;

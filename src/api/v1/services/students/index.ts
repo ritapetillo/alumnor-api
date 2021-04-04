@@ -11,6 +11,14 @@ studentRouter.post("/", studentController.registerStudent);
 //PUT api/v1/students/edit/:id
 studentRouter.put("/edit/:id", authenticateUser, studentController.editStudent);
 
+//GET ALL STUDENTS PER CURRENT INSTRUCTOR
+//PUT api/v1/students/edit/:id
+studentRouter.get(
+  "/instructor/:id",
+  authenticateUser,
+  studentController.getAllStudentsPerCurrentInstructor
+);
+
 //DELETE A STUDENT - FOR ADMIN (AND POTENTIALLY INSTRUCTORS)
 //DELETE api/v1/students/delete/:id
 studentRouter.delete(

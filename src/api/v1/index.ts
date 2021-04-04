@@ -10,6 +10,8 @@ import sectionRoutes from "./services/sections";
 import enrollmentRoutes from "./services/enrollments";
 import activityRoutes from "./services/activities";
 import submissionRoutes from "./services/submissions";
+import feedRoutes from "./services/feeds";
+
 
 const router = express.Router();
 //routes
@@ -24,5 +26,6 @@ router.use("/sections", sectionRoutes);
 router.use("/activities", activityRoutes);
 router.use("/enrollments", enrollmentRoutes);
 router.use("/submissions", submissionRoutes);
+router.use("/feeds", feedRoutes);
 
 export default router;
