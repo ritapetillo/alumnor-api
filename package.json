@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc -p",
+    "build": "tsc -p ./src",
     "start": "ts-node src/server.ts",
     "dev2": "NODE_ENV=production ts-node-dev --respawn dotenv/config src/server.ts",
     "dev": "NODE_ENV=dev nodemon -r dotenv/config src/server.ts",
