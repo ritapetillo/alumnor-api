@@ -1,5 +1,4 @@
 import express from "express";
-import { env } from "custom-env";
 import mongoose from "mongoose";
 import { servicesVersion } from "typescript";
 import cors from "cors";
@@ -16,10 +15,6 @@ import "./api/v1/helpers/oauth/strategies/zoom";
 import config from "./Config";
 
 const server = express();
-
-//set up the right .evn file
-const environment = process.env.NODE_ENV;
-env(environment);
 
 //server and port
 const PORT = config.PORT;
@@ -68,7 +63,5 @@ mongoose
     redisClient.on("connect", function () {
       console.error("connected");
     });
-    server.listen(PORT, () =>
-      console.log(`connected to ${PORT} in ${environment} env`)
-    );
+    server.listen(PORT, () => console.log(`connected to ${PORT}`));
   });
