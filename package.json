@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev2": "NODE_ENV=production ts-node-dev --respawn dotenv/config src/server.ts",
     "dev-prod": "NODE_ENV=production nodemon -r dotenv/config src/server.ts",
-    "start": "node build/index.js",
+    "start": "node build/server.js",
     "dev": "nodemon server.js",
     "build-ts": "tsc",
     "start:dev": "nodemon --config \"./nodemon.json\"",
