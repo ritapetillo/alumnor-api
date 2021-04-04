@@ -13,8 +13,8 @@ const viewAllCourses = async (
   next: NextFunction
 ) => {
   try {
-    const courses = await Course.find().sort({ createdAt: 1 });
-
+    const courses = await Course.find().sort({ createdAt: -1 });
+    console.log(courses);
     res.status(201).send({ courses });
   } catch (err) {
     const message = "There was an error retrieving courses";
