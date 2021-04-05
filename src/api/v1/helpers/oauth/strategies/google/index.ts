@@ -20,13 +20,13 @@ passport.use(
           profile._json,
           profile.id
         );
-        if (!user) throw Error;
-        const { _id } = user;
-        const email = user.email.toString();
-        const tokens = await generateTokens({ _id, email });
-
-        if (!tokens) throw Error;
-        return done(undefined, { user, tokens });
+        if (user) {
+          const { _id } = user;
+          const email = user.email.toString();
+          const tokens = await generateTokens({ _id, email });
+          if (!tokens) throw Error;
+          return done(undefined, { user, tokens });
+        }
       } catch (err) {
         console.log(err);
         done(err, undefined);

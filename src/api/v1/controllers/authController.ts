@@ -37,7 +37,6 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     const cookies = await generateCookies(tokens, res);
     res.status(201).send({ tokens });
   } catch (err) {
-   
     const error: any = new Error("There was a problem loggin in");
     error.code = 500;
     next(error);
@@ -91,7 +90,6 @@ const logout = async (req: Request, res: Response, next: NextFunction) => {
 
     res.redirect(`${Config.FE_URI}`);
   } catch (err) {
-
     const error: any = new Error("There was a problem loggin in");
     error.code = 500;
     next(error);
@@ -141,7 +139,6 @@ const refreshToken = async (
       res.status(200).send({ tokens });
     } else throw Error;
   } catch (err) {
-
     const error: any = new Error(`There was a problem with your credentials`);
     error.code = 500;
     next(error);
@@ -194,7 +191,6 @@ const resetPasword = async (
     const newUser = await user.save();
     res.status(200).send({ user: newUser });
   } catch (err) {
- 
     const error: any = new Error(`There was a problem resetting your password`);
     error.code = 404;
     next(error);
@@ -207,14 +203,13 @@ const googleAuthCallback = async (
   next: NextFunction
 ) => {
   try {
-    if (!req.user) throw Error;
-    const { user, tokens }: any = req.user;
+    // if (!req.user) throw Error;
+    const { user, tokens }: any = req.user!;
     const cookies = await generateCookies(tokens, res);
-    res.redirect(`${config.FE_URI}`);
+    console.log(cookies);
 
-    res.send(req.user);
+    res.redirect(`${config.FE_URI}`);
   } catch (err) {
-  
     const error: any = new Error(`User not found`);
     error.code = 404;
     next(error);
@@ -234,7 +229,6 @@ const facebookAuthCallback = async (
 
     res.send(req.user);
   } catch (err) {
-
     const error: any = new Error(`User not found`);
     error.code = 404;
     next(error);
@@ -263,7 +257,6 @@ const zoomAuthCallback = async (
     // if (!req.user) throw Error;
     // res.send(req.user);
   } catch (err) {
-
     const error: any = new Error(`User not found`);
     error.code = 404;
     next(error);
@@ -296,7 +289,6 @@ const linkUserWithZoom = async (
     res.send(req.cookies);
     // res.redirect(`${config.FE_URI}${current_url}`);
   } catch (err) {
-
     const error: any = new Error(`User not found`);
     error.code = 404;
     next(error);
@@ -352,7 +344,6 @@ const zoomRefreshToken = async (
     // if (!req.user) throw Error;
     // res.send(req.user);
   } catch (err) {
- 
     const error: any = new Error(
       `Zoom account not found, please connect to Zoom again`
     );
