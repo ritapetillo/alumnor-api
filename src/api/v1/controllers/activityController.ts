@@ -106,14 +106,14 @@ const editLiveActivity = async (
 ) => {
   try {
     const { id } = req.params;
-    console.log(req.body);
+ 
     let activityToEdit = await Activity.findById(id);
     if (!activityToEdit) throw Error;
     const liveMeeting = Object.assign(
       activityToEdit.liveMeeting,
       req.body.liveMeeting
     );
-    console.log(liveMeeting);
+  
     const activity = await Activity.findByIdAndUpdate(
       id,
       {
@@ -169,7 +169,7 @@ const uploadFiles = async (req: Request, res: Response, next: NextFunction) => {
       res.status(200).send("images uploaded");
     } else throw Error;
   } catch (err) {
-    console.log(err);
+  
     const error: any = new Error("It was not possible to upload the picture");
     error.code = 401;
     next(error);
@@ -199,8 +199,7 @@ const generateLiveLink = async (
     const _id = req.user!._id;
     const user = await User.findById(_id);
     if (!user) throw Error;
-    console.log(user);
-    console.log(user?.zoom.zoomEmail);
+
     if (user.zoom) {
       const request = await axios.post(
         `https://api.zoom.us/v2/users/${user.zoom.zoomEmail}/meetings`,
@@ -232,7 +231,7 @@ const viewAllMyActivities = async (
 ) => {
   try {
     if (!req.user) throw Error;
-    console.log(req.user._id);
+
     const userId = req.user._id;
     const enrollments = await Enrollment.find({
       userId,

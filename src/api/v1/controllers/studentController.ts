@@ -29,7 +29,6 @@ const registerStudent = async (
       //if the token is successfully generated, send an email with link to verify the email address
       const message = generetateVerificationEmail(email.toString(), token);
       const sendVerificationEmail = await sendEmail(message);
-      console.log(sendVerificationEmail);
       res.status(201).send({ student });
     } else {
       throw Error;

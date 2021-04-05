@@ -29,7 +29,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     const user = await User.findOne({ email });
     if (!user) throw Error;
     const isPassValid = await user.comparePassword(password);
-    console.log(isPassValid);
+
     if (!isPassValid) throw Error;
     const tokens = await generateTokens({ _id: user._id, email });
     //send cookies
@@ -37,7 +37,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     const cookies = await generateCookies(tokens, res);
     res.status(201).send({ tokens });
   } catch (err) {
-    console.log(err);
+   
     const error: any = new Error("There was a problem loggin in");
     error.code = 500;
     next(error);
@@ -60,7 +60,7 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
       //if the token is successfully generated, send an email with link to verify the email address
       const message = generetateVerificationEmail(email.toString(), token);
       const sendVerificationEmail = await sendEmail(message);
-      console.log(sendVerificationEmail);
+
       res.status(201).send({ user });
     } else {
       throw Error;
@@ -76,9 +76,22 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
 const logout = async (req: Request, res: Response, next: NextFunction) => {
   try {
     await generateCookies({ accessToken: "", refreshToken: "" }, res);
+    res.clearCookie("zoomAccess", {
+      httpOnly: true,
+      secure: true, //set to true when deploy
+      sameSite: "none",
+      //   sameSite: "none", // THIS is the config you are looing for.
+    });
+    res.clearCookie("zoomRefresh", {
+      sameSite: "none",
+      httpOnly: true,
+      secure: true, //set to true when deploy
+      //   sameSite: "none", // THIS is the config you are looing for.
+    });
+
     res.redirect(`${Config.FE_URI}`);
   } catch (err) {
-    console.log(err);
+
     const error: any = new Error("There was a problem loggin in");
     error.code = 500;
     next(error);
@@ -99,7 +112,6 @@ const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
 
     res.status(200).send({ user });
   } catch (err) {
-    console.log(err);
     const error: any = new Error(`There was a problem verifying your email`);
     error.code = 404;
     next(error);
@@ -117,7 +129,7 @@ const refreshToken = async (
     const payload = await verifyRefreshToken(refreshToken);
     if (!payload) throw Error;
     const user = await User.findById(payload._id);
-    console.log("user", user);
+
     if (!user) throw Error;
     const { _id, email } = user;
     const tokens = await generateTokens({
@@ -129,7 +141,7 @@ const refreshToken = async (
       res.status(200).send({ tokens });
     } else throw Error;
   } catch (err) {
-    console.log(err);
+
     const error: any = new Error(`There was a problem with your credentials`);
     error.code = 500;
     next(error);
@@ -177,13 +189,12 @@ const resetPasword = async (
       return next(error);
     }
     const user = await User.findOne({ email });
-    console.log(user);
     if (!user) throw Error;
     user.password = password;
     const newUser = await user.save();
     res.status(200).send({ user: newUser });
   } catch (err) {
-    console.log(err);
+ 
     const error: any = new Error(`There was a problem resetting your password`);
     error.code = 404;
     next(error);
@@ -203,7 +214,7 @@ const googleAuthCallback = async (
 
     res.send(req.user);
   } catch (err) {
-    console.log(err);
+  
     const error: any = new Error(`User not found`);
     error.code = 404;
     next(error);
@@ -223,7 +234,7 @@ const facebookAuthCallback = async (
 
     res.send(req.user);
   } catch (err) {
-    console.log(err);
+
     const error: any = new Error(`User not found`);
     error.code = 404;
     next(error);
@@ -252,7 +263,7 @@ const zoomAuthCallback = async (
     // if (!req.user) throw Error;
     // res.send(req.user);
   } catch (err) {
-    console.log(err);
+
     const error: any = new Error(`User not found`);
     error.code = 404;
     next(error);
@@ -285,7 +296,7 @@ const linkUserWithZoom = async (
     res.send(req.cookies);
     // res.redirect(`${config.FE_URI}${current_url}`);
   } catch (err) {
-    console.log(err);
+
     const error: any = new Error(`User not found`);
     error.code = 404;
     next(error);
@@ -319,7 +330,7 @@ const zoomRefreshToken = async (
     };
 
     const resp = await axios(config);
-    console.log("here");
+
     const { access_token, refresh_token }: any = await resp.data;
     const tokens: ITokens = {
       accessToken: access_token,
@@ -341,7 +352,7 @@ const zoomRefreshToken = async (
     // if (!req.user) throw Error;
     // res.send(req.user);
   } catch (err) {
-    console.log(err);
+ 
     const error: any = new Error(
       `Zoom account not found, please connect to Zoom again`
     );

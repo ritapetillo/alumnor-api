@@ -60,13 +60,11 @@ const createEnrollment = async (
   next: NextFunction
 ) => {
   try {
-    console.log(req.body);
     const details = {
       ...req.body,
       userId: req.user!._id,
     };
     const newEnrollment = new Enrollment(details);
-    console.log(newEnrollment);
     const savedEnrollment = await newEnrollment.save();
 
     res.status(201).send({ enrollment: savedEnrollment });
