@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import { Error } from "mongoose";
-import { generateCookies } from "../helpers/cookies";
+import { generateCookies, generateCookiesGoogle } from "../helpers/cookies";
 import {
   generatePasswordResetToken,
   generateTokens,
@@ -205,7 +205,7 @@ const googleAuthCallback = async (
   try {
     // if (!req.user) throw Error;
     const { user, tokens }: any = req.user!;
-    const cookies = await generateCookies(tokens, res);
+    const cookies = await generateCookiesGoogle(tokens, res);
     console.log(cookies);
 
     res.redirect(`${config.FE_URI}`);

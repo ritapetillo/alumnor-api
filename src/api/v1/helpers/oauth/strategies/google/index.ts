@@ -10,7 +10,7 @@ passport.use(
     {
       clientID: config.GOOGLE_CLIENT_ID!,
       clientSecret: config.GOOGLE_CLIENT_SECRET!,
-      callbackURL: `/api/v1/auth/google/callback`,
+      callbackURL: `${config.BE_URI}/api/v1/auth/google/callback`,
     },
     async function (accessToken, refreshToken, profile, done) {
       try {
@@ -20,6 +20,7 @@ passport.use(
           profile._json,
           profile.id
         );
+        console.log(user);
         if (user) {
           const { _id } = user;
           const email = user.email.toString();
