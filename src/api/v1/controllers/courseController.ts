@@ -14,7 +14,6 @@ const viewAllCourses = async (
 ) => {
   try {
     const courses = await Course.find().sort({ createdAt: -1 });
-    console.log(courses);
     res.status(201).send({ courses });
   } catch (err) {
     const message = "There was an error retrieving courses";
@@ -34,7 +33,6 @@ const viewACourse = async (req: Request, res: Response, next: NextFunction) => {
     });
     res.status(201).send({ course });
   } catch (err) {
-    console.log(err);
     const message = "There was an error retrieving this course";
     generateError(message, 404, next);
   }
@@ -117,7 +115,6 @@ const editCourse = async (req: Request, res: Response, next: NextFunction) => {
     if (!courseToEdit) throw Error;
 
     await courseToEdit.update({ $set: req.body });
-    console.log(courseToEdit);
 
     res.status(201).send({ course: courseToEdit });
   } catch (err) {
@@ -138,7 +135,6 @@ const reorderCourseSections = async (
     const sections = courseToEdit.sections;
     moveInArray(sections, from, to, sections[from]);
     await courseToEdit?.update({ $set: { sections } });
-    console.log(courseToEdit);
     res.status(201).send({ course: courseToEdit });
   } catch (err) {
     const error: any = new Error("There was an error editing this course");
@@ -208,7 +204,6 @@ const uploadPicture = async (
 ) => {
   try {
     const picture = req.file && req.file.path;
-    console.log(picture);
     if (!picture) throw Error;
     const { course } = req;
     await course.update({ $set: { picture } });

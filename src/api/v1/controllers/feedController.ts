@@ -94,7 +94,6 @@ const uploadFileFeed = async (
 const editFeed = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { courseId } = req.params;
-    console.log(req.body);
     const feed = await Feed.findByIdAndUpdate(
       courseId,
       {
