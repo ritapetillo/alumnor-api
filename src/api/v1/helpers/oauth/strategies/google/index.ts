@@ -10,7 +10,7 @@ passport.use(
     {
       clientID: config.GOOGLE_CLIENT_ID!,
       clientSecret: config.GOOGLE_CLIENT_SECRET!,
-      callbackURL: `${config.BE_URI}/api/v1/auth/google/callback`,
+      callbackURL: `/api/v1/auth/google/callback`,
     },
     async function (accessToken, refreshToken, profile, done) {
       try {
