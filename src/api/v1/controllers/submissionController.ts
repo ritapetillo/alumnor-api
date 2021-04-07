@@ -9,8 +9,11 @@ const viewAllSubmissionsByCourse = async (
 ) => {
   try {
     const submissions = await Submission.find({
-      courseId: req.params.courseId,
-    });
+      courseId: req.params.id,
+    })
+      .populate("assignmentId userId")
+      .sort({ createdAt: -1 });
+    console.log(submissions);
     res.status(200).send({ submissions });
   } catch (err) {
     const message = "There was a problem retrieving submissions";

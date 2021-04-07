@@ -19,7 +19,7 @@ const submissionRouter = express.Router();
 //VIEW A SUBMISSION BY COURSE
 // api/v1/submission/course/:courseId
 submissionRouter.get(
-  "/course/:courseId",
+  "/course/:id",
   authenticateUser,
   canEditCourse,
   submissionController.viewAllSubmissionsByCourse

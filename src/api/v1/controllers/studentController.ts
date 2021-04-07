@@ -139,9 +139,44 @@ const getAllStudentsPerCurrentInstructor = async (
   }
 };
 
+const getAllStudentsPerCourse = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) throw Error;
+    const reqUser: any = req.user;
+    let users = await User.find({
+      "enrollments.courseId": req.params.id,
+    }).populate({
+      path: "enrollments",
+      select: "-paymentDetails",
+
+      populate: {
+        path: "courseId",
+      },
+    });
+
+    // users = users.filter((user: any) =>
+    //   user.enrollments.find(
+    //     (enrollment: any) => enrollment.courseId === req.params.courseId
+    //   )
+    // );
+
+    res.status(201).send({ users });
+  } catch (err) {
+    console.log(err);
+    const error: any = new Error("There was a problem with the registration");
+    error.code = 404;
+    next(error);
+  }
+};
+
 export default {
   registerStudent,
   editStudent,
   deleteStudent,
   getAllStudentsPerCurrentInstructor,
+  getAllStudentsPerCourse
 };
