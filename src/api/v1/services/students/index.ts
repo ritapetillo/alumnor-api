@@ -1,6 +1,10 @@
 import express from "express";
 import studentController from "../../controllers/studentController";
 import { authenticateUser } from "../../middlewares/auth";
+import {
+  canAttendCourse,
+  canEditCourse,
+} from "../../middlewares/privileges/course";
 const studentRouter = express.Router();
 
 // studentRouter.get("/", userController.getUsers);
@@ -16,6 +20,15 @@ studentRouter.put("/edit/:id", authenticateUser, studentController.editStudent);
 studentRouter.get(
   "/instructor/:id",
   authenticateUser,
+  studentController.getAllStudentsPerCurrentInstructor
+);
+
+//GET ALL STUDENTS PER COURSE
+//PUT api/v1/students/edit/:id
+studentRouter.get(
+  "/course/:id",
+  authenticateUser,
+  canAttendCourse,
   studentController.getAllStudentsPerCurrentInstructor
 );
 

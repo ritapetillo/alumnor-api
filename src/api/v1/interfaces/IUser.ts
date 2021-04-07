@@ -1,4 +1,5 @@
 import { Document, Model } from "mongoose";
+import { IEnrollment } from "./IEnrollment";
 
 //interface for individual Document (methods and prop which are avaialble for individual Document)
 interface IUser extends Document {
@@ -29,6 +30,7 @@ interface IUser extends Document {
     zoomRefreshToken?: string;
     zoomAccessToken?: string;
   };
+  enrollments: IEnrollment;
 }
 
 //interface for generic Model (methods and proprieties which are avaialble for Model)
