@@ -29,7 +29,7 @@ studentRouter.get(
   "/course/:id",
   authenticateUser,
   canAttendCourse,
-  studentController.getAllStudentsPerCurrentInstructor
+  studentController.getAllStudentsPerCourse
 );
 
 //DELETE A STUDENT - FOR ADMIN (AND POTENTIALLY INSTRUCTORS)

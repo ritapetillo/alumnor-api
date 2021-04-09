@@ -73,7 +73,7 @@ courseSchema.pre<ICourse>("save", async function (next: any) {
 
 courseSchema.statics.findCoursePublic = async function (id, next) {
   try {
-    const course = this.findById(id).select("-sections");
+    const course = this.findById(id).populate('instructors').select("-sections");
     return course;
   } catch (err) {
     generateError("There is a problem finding this course", 404, next);

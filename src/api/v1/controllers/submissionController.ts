@@ -13,7 +13,6 @@ const viewAllSubmissionsByCourse = async (
     })
       .populate("assignmentId userId")
       .sort({ createdAt: -1 });
-    console.log(submissions);
     res.status(200).send({ submissions });
   } catch (err) {
     const message = "There was a problem retrieving submissions";
@@ -82,8 +81,6 @@ const uploadFileSubmission = async (
 ) => {
   try {
     const { submissionId } = req.params;
-    console.log("here");
-    console.log(req.files);
     if (req.files) {
       const { files }: any = req;
       files.forEach(async (file: any) => {
@@ -93,7 +90,6 @@ const uploadFileSubmission = async (
           type: file.mimetype,
           name: file.originalname,
         };
-        console.log(file);
         const editSubmission = await Submission.findByIdAndUpdate(
           submissionId,
           {

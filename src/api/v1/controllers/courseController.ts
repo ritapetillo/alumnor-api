@@ -45,8 +45,8 @@ const viewACoursePublic = async (
   next: NextFunction
 ) => {
   try {
-    const course = await Course.findCoursePublic(req.params.id);
-    res.status(201).send({ course });
+    const course = await Course.findCoursePublic(req.params.id)
+    res.status(201).send({ course })
   } catch (err) {
     console.log(err);
     const message = "There was an error retrieving this course";

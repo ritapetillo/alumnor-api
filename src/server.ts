@@ -12,10 +12,13 @@ import passport from "passport";
 import "./api/v1/helpers/oauth/strategies/google";
 import "./api/v1/helpers/oauth/strategies/facebook";
 import "./api/v1/helpers/oauth/strategies/zoom";
+import http from "http";
+import socketServer from "./api/v1/socket";
 
 import config from "./Config";
 
 const server = express();
+const httpServer = http.createServer(server);
 
 //set up the right .evn file
 const environment = process.env.NODE_ENV;
@@ -58,6 +61,8 @@ server.use("/api", apiRoutes);
 //ERROR HANDLER
 server.use(error_handler({ log: true, debug: true }));
 
+const socket = socketServer(httpServer);
+
 //connect to server and db
 mongoose
   .connect(config.MONGO_URI!, {
@@ -68,7 +73,5 @@ mongoose
     redisClient.on("connect", function () {
       console.error("connected");
     });
-    server.listen(PORT, () =>
-      console.log(`connected to ${PORT} in ${environment} env`)
-    );
+    httpServer.listen(PORT, () => console.log(`connected to ${PORT}`));
   });

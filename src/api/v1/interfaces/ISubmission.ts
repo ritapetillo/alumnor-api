@@ -7,4 +7,5 @@ export interface ISubmission extends Document {
   courseId: string;
   uploads: [string];
   links: [string];
+  checked: boolean;
 }
