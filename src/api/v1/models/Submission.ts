@@ -19,6 +19,10 @@ const submissionSchema = new Schema(
       ref: "courses",
     },
     grade: String,
+    checked: {
+      type: Boolean,
+      default: false,
+    },
     uploads: [{}],
     links: [String],
   },

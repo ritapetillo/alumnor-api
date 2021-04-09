@@ -147,9 +147,7 @@ const getAllStudentsPerCourse = async (
   try {
     if (!req.user) throw Error;
     const reqUser: any = req.user;
-    let users = await User.find({
-      "enrollments.courseId": req.params.id,
-    }).populate({
+    let users = await User.find().populate({
       path: "enrollments",
       select: "-paymentDetails",
 
@@ -158,11 +156,11 @@ const getAllStudentsPerCourse = async (
       },
     });
 
-    // users = users.filter((user: any) =>
-    //   user.enrollments.find(
-    //     (enrollment: any) => enrollment.courseId === req.params.courseId
-    //   )
-    // );
+    users = users.filter((user: any) =>
+      user.enrollments.find(
+        (enrollment: any) => enrollment.courseId._id == req.params.id
+      )
+    );
 
     res.status(201).send({ users });
   } catch (err) {
@@ -178,5 +176,5 @@ export default {
   editStudent,
   deleteStudent,
   getAllStudentsPerCurrentInstructor,
-  getAllStudentsPerCourse
+  getAllStudentsPerCourse,
 };
